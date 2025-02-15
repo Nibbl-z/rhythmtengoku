@@ -158,9 +158,8 @@ script script_night_walk_main
     night_walk_play_drumtech_note 38, 256, 0
     night_walk_pop_balloon
     rest 24
-    night_walk_set_platform 1
     set_marking_criteria 2
-    spawn_cue CUE_SNARE
+    spawn_cue CUE_KICK
     night_walk_play_drumtech_note 38, 256, 0
     night_walk_pop_balloon
     rest 20
@@ -169,7 +168,6 @@ script script_night_walk_main
     rest 4
     clear_text_s
     run scene_hide_bg_layer, 1
-    night_walk_set_platform 0
     set_marking_criteria 1
     spawn_cue CUE_KICK
     rest 24
@@ -183,13 +181,29 @@ script script_night_walk_main
     rest 24
     spawn_cue CUE_KICK
     rest 24
+    set_marking_criteria 2
+    spawn_cue CUE_START_ROLL
+    rest 12
+    set_marking_criteria 1
+    spawn_cue CUE_STOP_ROLL
+    rest 36
     spawn_cue CUE_KICK
     rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
+    spawn_cue CUE_KICK
     rest 24
-    night_walk_set_platform 0
+    spawn_cue CUE_KICK
+    rest 24
+    spawn_cue CUE_KICK
+    rest 24
+    spawn_cue CUE_KICK
+    rest 24
+    spawn_cue CUE_KICK
+    rest 24
+    spawn_cue CUE_KICK
+    rest 24
+    set_marking_criteria 2
+    spawn_cue CUE_KICK
+    rest 24
     set_marking_criteria 1
     spawn_cue CUE_KICK
     rest 24
@@ -203,33 +217,11 @@ script script_night_walk_main
     rest 24
     spawn_cue CUE_KICK
     rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    night_walk_set_platform 1
+    spawn_cue CUE_START_ROLL
+    rest 12
+    spawn_cue CUE_STOP_ROLL
+    rest 36
     set_marking_criteria 2
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 0
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_ROLL
-    rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 2
-    spawn_cue CUE_CYMBAL
-    rest 24
-    night_walk_set_platform 2
     set_marking_criteria 1
     spawn_cue CUE_KICK
     rest 24

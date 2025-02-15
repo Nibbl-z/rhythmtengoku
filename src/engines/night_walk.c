@@ -19,7 +19,9 @@ enum PlayYanStatesEnum {
     PLAY_YAN_STATE_HANGING_ON,
     PLAY_YAN_STATE_FALLING,
     PLAY_YAN_STATE_STAR_WAND,
-    PLAY_YAN_STATE_ZAPPED
+    PLAY_YAN_STATE_ZAPPED,
+    PLAY_YAN_STATE_ROLLING,
+    PLAY_YAN_STATE_JUMP_HIGH
 };
 
 enum BridgeTypesEnum {
@@ -51,13 +53,13 @@ void night_walk_init_play_yan(void) {
 void night_walk_play_yan_jump(s32 jumpOverGap, s32 timingOffset) {
     struct PlayYan *playYan = &gNightWalk->playYan;
     struct NightWalkUnk3B8 *unk3B8 = &gNightWalk->unk3B8;
-
+    
     if (playYan->state == PLAY_YAN_STATE_JUMPING) {
         if (playYan->isAscending) {
             unk3B8->unk8 -= 16;
         }
     }
-
+    
     playYan->isAscending = jumpOverGap;
     playYan->state = PLAY_YAN_STATE_JUMPING;
     sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_jump, 0, 0, 0, 0);
@@ -65,6 +67,31 @@ void night_walk_play_yan_jump(s32 jumpOverGap, s32 timingOffset) {
     playYan->jumpDuration = ticks_to_frames(0x14) - timingOffset;
 }
 
+// Play-Yan End Roll
+void night_walk_play_yan_end_roll(s32 jumpOverGap, s32 timingOffset) {
+    struct PlayYan *playYan = &gNightWalk->playYan;
+    struct NightWalkUnk3B8 *unk3B8 = &gNightWalk->unk3B8;
+    
+    if (playYan->state == PLAY_YAN_STATE_JUMPING) {
+        if (playYan->isAscending) {
+            unk3B8->unk8 -= 16;
+        }
+    }
+    
+    playYan->isAscending = jumpOverGap;
+    playYan->state = PLAY_YAN_STATE_JUMP_HIGH;
+    sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_jump, 0, 0, 0, 0);
+    playYan->jumpTime = 0;
+    playYan->jumpDuration = ticks_to_frames(0x20) - timingOffset;
+}
+
+void night_walk_play_yan_roll() {
+    struct PlayYan *playYan = &gNightWalk->playYan;
+
+    sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_crawl, 0, 0, 0, 0);
+    playYan->state = PLAY_YAN_STATE_ROLLING;
+    playYan->jumpTime = 0;
+}
 
 // Update Play-Yan (State 1)
 void night_walk_play_yan_update_jump(struct PlayYan *playYan) {
@@ -100,8 +127,15 @@ void night_walk_play_yan_update_jump(struct PlayYan *playYan) {
     // jumpHeight = w - (((x-(w/2))^2) * 4 / w)
     // jumpHeight = w - (((2x - w)^2) / w)
     x = totalSteps * playYan->jumpTime / playYan->jumpDuration;
-    x -= 16;
-    jumpHeight = 32;
+    
+    if (playYan->state == PLAY_YAN_STATE_JUMP_HIGH) {
+        jumpHeight = 64;
+        x -= 12;
+    } else {
+        jumpHeight = 32;
+        x -= 16;
+    }
+    
     r0 = 32 * x * x;
     r1 = 256;
     jumpHeight -= (r0 / r1);
@@ -125,6 +159,15 @@ void night_walk_play_yan_update_jump(struct PlayYan *playYan) {
             playYan->state = PLAY_YAN_STATE_ZAPPED;
             play_sound(&s_f_drumtech_damage_seqData);
         }
+    }
+}
+
+void night_walk_play_yan_update_roll(struct PlayYan *playYan) {
+    playYan->jumpTime++;
+
+    if (playYan->jumpTime >= 0x14) {
+        sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_walk, 0, 1, 0, 0);
+        playYan->state = PLAY_YAN_STATE_WALKING;
     }
 }
 
@@ -192,7 +235,7 @@ void night_walk_play_yan_update_wand(struct PlayYan *playYan) {
 void night_walk_play_yan_update_zap_fall(struct PlayYan *playYan) {
     playYan->zapTime--;
     if (playYan->zapTime > 0) return;
-
+    
     sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_violent_electrocution, 1, 0, 0, 0);
     sprite_set_anim(gSpriteHandler, playYan->fishSprite, anim_night_walk_fish, 0, 1, 0, 0);
     night_walk_play_yan_fall();
@@ -247,6 +290,9 @@ void night_walk_update_play_yan(void) {
         case PLAY_YAN_STATE_JUMPING:
             night_walk_play_yan_update_jump(playYan);
             break;
+        case PLAY_YAN_STATE_JUMP_HIGH:
+            night_walk_play_yan_update_jump(playYan);
+            break;
         case PLAY_YAN_STATE_HANGING_ON:
             break;
         case PLAY_YAN_STATE_FALLING:
@@ -257,6 +303,9 @@ void night_walk_update_play_yan(void) {
             break;
         case PLAY_YAN_STATE_ZAPPED:
             night_walk_play_yan_update_zap_fall(playYan);
+            break;
+        case PLAY_YAN_STATE_ROLLING:
+            night_walk_play_yan_update_roll(playYan);
             break;
     }
 }
@@ -787,7 +836,7 @@ void night_walk_engine_start(u32 ver) {
     scene_show_obj_layer();
     scene_set_bg_layer_display(BG_LAYER_1, FALSE, 0, 0, 0, 29, 0);
     gameplay_inputs_enabled(FALSE);
-    gameplay_set_input_buttons(A_BUTTON, 0);
+    gameplay_set_input_buttons(A_BUTTON, A_BUTTON);
     init_drumtech(&gNightWalk->drumTech);
     gNightWalk->drumVolume = INT_TO_FIXED(1.0);
     night_walk_init_play_yan();
@@ -1032,7 +1081,7 @@ void night_walk_cue_hit(struct Cue *cue, struct NightWalkCue *info, u32 pressed,
     }
 
     timingOffset = ~(gameplay_get_last_hit_offset());
-
+    
     if (D_03004afc & A_BUTTON) {
         if (gNightWalk->inSwing) {
             if (info->type == NIGHT_WALK_CUE_HEART) {
@@ -1074,16 +1123,23 @@ void night_walk_cue_hit(struct Cue *cue, struct NightWalkCue *info, u32 pressed,
                     play_drumtech_seq(drum_seq_night_walk_default, timingOffset, 0);
                 }
             }
+            if (info->type == NIGHT_WALK_CUE_END_ROLL) {
+                play_drumtech_seq(night_walk_drum_seq_cymbal[agb_random(1)], timingOffset, 0);
+            }
         }
         if ((info->type == NIGHT_WALK_CUE_STAR_WAND) && info->starWandIsAvailable) {
             starWandObtained = TRUE;
         }
     } else {
-        play_drumtech_seq(drum_seq_night_walk_default, timingOffset, 0);
+        if (info->type == NIGHT_WALK_CUE_END_ROLL) {
+            play_drumtech_seq(night_walk_drum_seq_cymbal[agb_random(1)], timingOffset, 0);
+        } else {
+            play_drumtech_seq(drum_seq_night_walk_default, timingOffset, 0);
+        }
     }
-
+    
     info->hasOpened = TRUE;
-
+    
     if (starWandObtained) {
         gNightWalk->stoppedScrolling = TRUE;
         night_walk_play_yan_get_wand();
@@ -1094,10 +1150,19 @@ void night_walk_cue_hit(struct Cue *cue, struct NightWalkCue *info, u32 pressed,
         gameplay_add_cue_result(gNightWalk->markingCriteria, 0, 0); // register cue result
         sprite_set_anim(gSpriteHandler, info->boxSprite, anim_night_walk_ng_wand_box, 1, 1, 0x7f, 0);
     } else {
-        night_walk_play_yan_jump(info->endOfBridge, gameplay_get_last_hit_offset());
-        sprite_set_playback(gSpriteHandler, info->boxSprite, 1, 0x7f, 0);
-        sprite_set_anim_cel(gSpriteHandler, info->boxSprite, 1);
-        night_walk_expand_stars(1);
+        if (info->type == NIGHT_WALK_CUE_START_ROLL) {
+            night_walk_play_yan_roll();
+        } else if (info->type == NIGHT_WALK_CUE_END_ROLL) {
+            night_walk_play_yan_end_roll(info->endOfBridge, gameplay_get_last_hit_offset());
+            sprite_set_playback(gSpriteHandler, info->boxSprite, 1, 0x7f, 0);
+            sprite_set_anim_cel(gSpriteHandler, info->boxSprite, 1);
+            night_walk_expand_stars(1);
+        } else {
+            night_walk_play_yan_jump(info->endOfBridge, gameplay_get_last_hit_offset());
+            sprite_set_playback(gSpriteHandler, info->boxSprite, 1, 0x7f, 0);
+            sprite_set_anim_cel(gSpriteHandler, info->boxSprite, 1);
+            night_walk_expand_stars(1);
+        }
     }
 
     night_walk_cue_check_for_fish(info);

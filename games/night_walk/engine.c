@@ -642,6 +642,54 @@ struct CueDefinition night_walk_cue_star_wand = {
     /* Miss Condition  */ NULL
 };
 
+// Cue 05 (Start Roll)
+struct CueDefinition night_walk_cue_start_roll = {
+    /* Unknown Param.  */ 0,
+    /* Input Buttons   */ PRESS_BUTTON(A_BUTTON),
+    /* Total Duration  */ 0xC0,
+    /* Hit Window      */ -0x04, 0x04,
+    /* Barely Window   */ -0x04, 0x04,
+    /* Tempo-Dependent */ FALSE,
+    /* Force-Delete    */ FALSE,
+    /* Size in Memory  */ sizeof(struct NightWalkCue),
+    /* Func. Spawn     */ night_walk_cue_spawn,
+    /* Spawn Parameter */ NIGHT_WALK_CUE_START_ROLL,
+    /* Func. Update    */ night_walk_cue_update,
+    /* Func. Despawn   */ night_walk_cue_despawn,
+    /* Func. Hit       */ night_walk_cue_hit,
+    /* Func. Barely    */ night_walk_cue_barely,
+    /* Func. Miss      */ night_walk_cue_miss,
+    /* SFX Spawn       */ NULL,
+    /* SFX Hit         */ NULL,
+    /* SFX Barely      */ NULL,
+    /* SFX Miss        */ NULL,
+    /* Miss Condition  */ NULL
+};
+
+// Cue 06 (End Roll)
+struct CueDefinition night_walk_cue_end_roll = {
+    /* Unknown Param.  */ 0,
+    /* Input Buttons   */ RELEASE_BUTTON(A_BUTTON),
+    /* Total Duration  */ 0xC0,
+    /* Hit Window      */ -0x04, 0x04,
+    /* Barely Window   */ -0x04, 0x04,
+    /* Tempo-Dependent */ FALSE,
+    /* Force-Delete    */ FALSE,
+    /* Size in Memory  */ sizeof(struct NightWalkCue),
+    /* Func. Spawn     */ night_walk_cue_spawn,
+    /* Spawn Parameter */ NIGHT_WALK_CUE_END_ROLL,
+    /* Func. Update    */ night_walk_cue_update,
+    /* Func. Despawn   */ night_walk_cue_despawn,
+    /* Func. Hit       */ night_walk_cue_hit,
+    /* Func. Barely    */ night_walk_cue_barely,
+    /* Func. Miss      */ night_walk_cue_miss,
+    /* SFX Spawn       */ NULL,
+    /* SFX Hit         */ NULL,
+    /* SFX Barely      */ NULL,
+    /* SFX Miss        */ NULL,
+    /* Miss Condition  */ NULL
+};
+
 // [D_089e37b0] Cue Definition Index
 struct CueDefinition *night_walk_cue_index[] = {
     /* 0x00 */ &night_walk_cue_kick,
@@ -649,8 +697,8 @@ struct CueDefinition *night_walk_cue_index[] = {
     /* 0x02 */ &night_walk_cue_cymbal,
     /* 0x03 */ &night_walk_cue_roll,
     /* 0x04 */ &night_walk_cue_star_wand,
-    /* 0x05 */ NULL,
-    /* 0x06 */ NULL,
+    /* 0x05 */ &night_walk_cue_start_roll,
+    /* 0x06 */ &night_walk_cue_end_roll,
     /* 0x07 */ NULL,
     /* 0x08 */ NULL,
     /* 0x09 */ NULL,

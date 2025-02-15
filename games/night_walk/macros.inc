@@ -15,13 +15,15 @@
     .set ENABLE_SWING,          0x07
     .set SET_DRUM_VOLUME,       0x08
     .set EXPAND_STARS,          0x09
-
+    
     @ Cues
-    .set CUE_KICK,      0x00
-    .set CUE_SNARE,     0x01
-    .set CUE_CYMBAL,    0x02
-    .set CUE_ROLL,      0x03
-    .set CUE_STAR_WAND, 0x04
+    .set CUE_KICK,       0x00
+    .set CUE_SNARE,      0x01
+    .set CUE_CYMBAL,     0x02
+    .set CUE_ROLL,       0x03
+    .set CUE_STAR_WAND,  0x04
+    .set CUE_START_ROLL, 0x05
+    .set CUE_STOP_ROLL,  0x06
 
     @ [Event 0x04] Bridge Types
     .set PLATFORM_BRIDGE,   0

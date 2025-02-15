@@ -18,7 +18,9 @@ enum NightWalkCuesEnum {
     NIGHT_WALK_CUE_LOLLIPOP,
     NIGHT_WALK_CUE_UMBRELLA,
     NIGHT_WALK_CUE_HEART_2,
-    NIGHT_WALK_CUE_STAR_WAND
+    NIGHT_WALK_CUE_STAR_WAND,
+    NIGHT_WALK_CUE_START_ROLL,
+    NIGHT_WALK_CUE_END_ROLL
 };
 
 #define DRUMTECH_NOTE_FUNC 0xFFFF
@@ -170,6 +172,7 @@ extern struct DrumTechNote drum_seq_night_walk_short_hop[];
 // Functions:
 extern void night_walk_init_play_yan(void); // Init. Play-Yan
 extern void night_walk_play_yan_jump(s32 jumpOverGap, s32 timingOffset); // Play-Yan Jump
+extern void night_walk_play_yan_roll(void); // Play-Yan Jump
 extern void night_walk_play_yan_update_jump(struct PlayYan *playYan); // Update Play-Yan (State 1)
 extern void night_walk_play_yan_hold_on(s16 x, s16 y); // Play-Yan Hold On
 extern void night_walk_play_yan_fall(void); // Play-Yan Fall
