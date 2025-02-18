@@ -196,7 +196,14 @@ script script_night_walk_main
     spawn_cue CUE_KICK
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     spawn_cue CUE_KICK
     rest 24
     set_marking_criteria 2
@@ -232,7 +239,14 @@ script script_night_walk_main
     spawn_cue CUE_KICK
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     spawn_cue CUE_KICK
     rest 24
     night_walk_set_platform 1
@@ -310,7 +324,14 @@ script script_night_walk_main
     spawn_cue CUE_KICK
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     spawn_cue CUE_KICK
     rest 24
     spawn_cue CUE_SNARE
@@ -385,12 +406,27 @@ script script_night_walk_main
     night_walk_set_platform 1
     spawn_cue CUE_SNARE
     night_walk_set_platform 0
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     run scene_hide_bg_layer, 1
     spawn_cue CUE_KICK @ Do anything now
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_event BRING_OUT_FISHES
     spawn_cue CUE_KICK
     rest 24
     night_walk_set_platform 1
@@ -426,7 +462,14 @@ script script_night_walk_main
     spawn_cue CUE_KICK @ I hear your voice now!
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     spawn_cue CUE_KICK
     rest 24
     night_walk_set_platform 1
@@ -467,13 +510,21 @@ script script_night_walk_main
     spawn_cue CUE_KICK @ Into the sky now
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     spawn_cue CUE_KICK
     rest 24
     night_walk_set_platform 1
     spawn_cue CUE_SNARE
     night_walk_set_platform 0
     rest 24
+    night_walk_event BAIBAI_FISHES
     spawn_cue CUE_KICK @ Let's reach up to the
     rest 24
     spawn_cue CUE_SNARE
@@ -506,7 +557,14 @@ script script_night_walk_main
     spawn_cue CUE_KICK @ LLLLIVING THE DREAMS OF!!!
     rest 24
     spawn_cue CUE_SNARE
-    rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     spawn_cue CUE_KICK
     rest 24
     night_walk_set_platform 1
@@ -572,8 +630,23 @@ script script_night_walk_main
     rest 24
     night_walk_set_platform 1
     spawn_cue CUE_KICK
-    rest 36
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     rest 24
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 8
+    night_walk_play_drumtech_note 38, 256, 0
+    rest 4
     rest 24
     rest 24
     rest 24

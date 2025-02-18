@@ -31,6 +31,13 @@ enum BridgeTypesEnum {
     PLATFORM_TYPE_FISH
 };
 
+enum BackgroundFishStatesEnum {
+    FISH_STATE_OFFSCREEN,
+    FISH_STATE_MOVING_ONSCREEN,
+    FISH_STATE_ONSCREEN,
+    FISH_STATE_MOVING_OFFSCREEN
+};
+
 
 /* NIGHT WALK */
 
@@ -319,10 +326,10 @@ void night_walk_init_stars(void) {
     s24_8 fixednegative8; 
 
     unk3B8 = &gNightWalk->unk3B8;
-
+    
     for (i = 0, fixednegative8 = -INT_TO_FIXED(8); i < NIGHT_WALK_STAR_AMOUNT; i++) {
         star = &gNightWalk->stars[i];
-
+        
         star->sprite = sprite_create(gSpriteHandler, anim_night_walk_star_tiny, agb_random(8), 64, 64, 0x490a, 1, 0, 0);
         star->x = INT_TO_FIXED(agb_random(0x100)) + fixednegative8;
         star->y = INT_TO_FIXED(agb_random(0xb0)) + fixednegative8;
@@ -337,6 +344,68 @@ void night_walk_init_stars(void) {
     gNightWalk->currentStarSize = 0;
 }
 
+void spawn_bg_fish(void) {
+    struct NightWalkBackgroundFish *fish;
+    
+    u32 i;
+    
+    for (i = 0; i < NIGHT_WALK_FISH_AMOUNT; i++) {
+        fish = &gNightWalk->fishes[i];
+        
+        fish->x = 0;
+        fish->y = 0;
+
+        // This should probably be determined in beatscript. But I don't wanna :P
+        switch (i) {
+            case 0:
+                fish->x = 30;
+                fish->y = 20;
+                break;
+            case 1:
+                fish->x = 60;
+                fish->y = 60;
+                break;
+            case 2:
+                fish->x = 100;
+                fish->y = 40;
+                break;
+            case 3:
+                fish->x = 160;
+                fish->y = 60;
+                break;
+            case 4:
+                fish->x = 200;
+                fish->y = 20;
+                break;
+        }
+        
+        fish->sprite = sprite_create(gSpriteHandler, anim_night_walk_fish, agb_random(8), fish->x + 240, fish->y + 50, 0x48a6, 1, 0, 0);
+        fish->state = FISH_STATE_OFFSCREEN;
+        fish->speed = 3;
+    }
+}
+
+void update_bg_fish(void) {
+    struct NightWalkBackgroundFish *fish;
+    u32 i;
+    
+    for (i = 0; i < NIGHT_WALK_FISH_AMOUNT; i++) {
+        fish = &gNightWalk->fishes[i];
+        
+        switch(fish->state) {
+            case FISH_STATE_MOVING_ONSCREEN:
+                sprite_set_x(gSpriteHandler, fish->sprite, sprite_get_x(gSpriteHandler, fish->sprite) - fish->speed);
+
+                if (sprite_get_x(gSpriteHandler, fish->sprite) <= fish->x) {
+                    fish->state = FISH_STATE_ONSCREEN;
+                }
+                break;
+            case FISH_STATE_MOVING_OFFSCREEN:
+                sprite_set_x(gSpriteHandler, fish->sprite, sprite_get_x(gSpriteHandler, fish->sprite) - fish->speed);
+                break;
+        }
+    }
+}
 
 // Update Stars
 s32 night_walk_scroll_stars(void) {
@@ -579,6 +648,29 @@ void parse_drumtech_seq_beatscript_args(s32 args, u32 *drumID, u32 *volume, s32 
     *volume = (args >> 8) & 0x1ff;
     *pitch = (args >> 17);
 }
+
+// Engine Event 0x0B (Bring out the fishes!!!)
+void bring_out_the_fishes(void) {
+    struct NightWalkBackgroundFish *fish;
+    u32 i;
+    
+    for (i = 0; i < NIGHT_WALK_FISH_AMOUNT; i++) {
+        fish = &gNightWalk->fishes[i];
+        fish->state = FISH_STATE_MOVING_ONSCREEN;
+    }
+}
+
+// Engine Event 0x0C (Baibai fishes!!!)
+void baibai_fishes(void) {
+    struct NightWalkBackgroundFish *fish;
+    u32 i;
+    
+    for (i = 0; i < NIGHT_WALK_FISH_AMOUNT; i++) {
+        fish = &gNightWalk->fishes[i];
+        fish->state = FISH_STATE_MOVING_OFFSCREEN;
+    }
+}
+
 
 
 // Engine Event 0x00 (Cowbell)
@@ -842,7 +934,9 @@ void night_walk_engine_start(u32 ver) {
     night_walk_init_play_yan();
     func_0802a970();
     night_walk_init_stars();
-
+    spawn_bg_fish();
+    
+    
     textPrinter = text_printer_create_new(get_current_mem_id(), 1, 240, 30);
     text_printer_set_x_y(textPrinter, 0, 40);
     text_printer_set_layer(textPrinter, 0x800);
@@ -901,6 +995,7 @@ void night_walk_engine_update(void) {
     update_drumtech();
     night_walk_update_play_yan();
     night_walk_update_stars();
+    update_bg_fish();
 }
 
 
@@ -912,16 +1007,14 @@ void night_walk_engine_stop(void) {
 // Calculate Cue X Position
 s32 night_walk_cue_get_x(struct NightWalkCue *info) {
     s32 start = 320;
-
+    
     return start - (INT_TO_FIXED(info->runningTime + info->earlinessTime) / info->duration);
 }
-
 
 // Engine Event 0x06 (Set Next Cue Earliness Time Offset)
 void night_walk_set_cue_earliness(u32 duration) {
     gNightWalk->cueEarlinessOffset = duration;
 }
-
 
 // Cue - Spawn
 void night_walk_cue_spawn(struct Cue *cue, struct NightWalkCue *info, u32 type) {
@@ -1069,7 +1162,6 @@ void night_walk_cue_check_for_fish(struct NightWalkCue *info) {
     gNightWalk->playYan.fishSprite = info->fishSprite;
 }
 
-
 // Cue - Hit
 void night_walk_cue_hit(struct Cue *cue, struct NightWalkCue *info, u32 pressed, u32 released) {
     s32 starWandObtained = FALSE;
@@ -1079,7 +1171,7 @@ void night_walk_cue_hit(struct Cue *cue, struct NightWalkCue *info, u32 pressed,
         gameplay_ignore_this_cue_result();
         return;
     }
-
+    
     timingOffset = ~(gameplay_get_last_hit_offset());
     
     if (D_03004afc & A_BUTTON) {

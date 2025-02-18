@@ -7,6 +7,7 @@
 
 // Engine Macros/Enums:
 #define NIGHT_WALK_STAR_AMOUNT 32
+#define NIGHT_WALK_FISH_AMOUNT 5
 
 enum NightWalkVersionsEnum {
     NIGHT_WALK_VER_0,
@@ -117,6 +118,13 @@ struct NightWalkEngineData {
         s32 x;
         s32 y;
     } stars[NIGHT_WALK_STAR_AMOUNT];
+    struct NightWalkBackgroundFish {
+        s16 sprite;
+        s32 x;
+        s32 y;
+        u32 state:3;
+        s32 speed;
+    } fishes[NIGHT_WALK_FISH_AMOUNT];
     s16 starsVOffset;
     u32 nextStar;
     u32 currentStarSize;
@@ -195,6 +203,9 @@ extern void night_walk_shrink_stars(u32 total); // Decrease Stars Progress
 extern void night_walk_clear_all_stars(void); // Clear Stars
 extern void night_walk_update_stars(void); // Update Stars (if [...])
 extern void func_0802a970(void); // Init. unk3B8
+extern void bring_out_the_fishes(void);
+extern void update_bg_fish(void);
+extern void baibai_fishes(void);
 
 extern void reset_drumtech_seq(void); // Init. DrumTech Sequence
 extern void init_drumtech(struct DrumTechController *data); // Init. DrumTech

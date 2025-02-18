@@ -15,6 +15,8 @@
     .set ENABLE_SWING,          0x07
     .set SET_DRUM_VOLUME,       0x08
     .set EXPAND_STARS,          0x09
+    .set BRING_OUT_FISHES,      0x0B
+    .set BAIBAI_FISHES,         0x0C
     
     @ Cues
     .set CUE_KICK,       0x00
