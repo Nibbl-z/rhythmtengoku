@@ -936,7 +936,7 @@ void night_walk_cue_spawn(struct Cue *cue, struct NightWalkCue *info, u32 type) 
     info->hasFish = -1;
     gameplay_set_cue_duration(cue, ticks_to_frames(0xC0 - gNightWalk->cueEarlinessOffset)); // set cue duration
     info->hasFish = FALSE;
-
+    
     switch (gNightWalk->nextBridgeType) {
         case PLATFORM_TYPE_BRIDGE:
             endOfBridge = FALSE;

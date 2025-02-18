@@ -744,6 +744,7 @@ EngineEvent night_walk_engine_events[] = {
     /* 0x08 */ night_walk_set_drum_volume,
     /* 0x09 */ night_walk_event_expand_stars,
     /* 0x0A */ night_walk_engine_event_stub
+ 
 };
 
 // [D_089e382c] Night Walk Game Engine
