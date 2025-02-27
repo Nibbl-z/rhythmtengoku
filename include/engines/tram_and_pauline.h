@@ -16,11 +16,12 @@ enum TramPaulineVersionsEnum {
 
 // Engine Types:
 struct TramPaulineEngineData {
-    u8 pad[0x48];
+    u8 version;
+    u8 pad[0x47];
 };
 
 struct TramPaulineCue {
-    /* add fields here */
+    u8 unk;
 };
 
 
@@ -54,8 +55,8 @@ extern void tram_pauline_cue_spawn(struct Cue *, struct TramPaulineCue *, u32 ch
 extern u32  tram_pauline_cue_update(struct Cue *, struct TramPaulineCue *, u32 runningTime, u32 duration); // Cue - Update
 extern void tram_pauline_cue_despawn(struct Cue *, struct TramPaulineCue *); // Cue - Despawn
 extern void tram_pauline_cue_hit(struct Cue *, struct TramPaulineCue *, u32 pressed, u32 released); // Cue - Hit
-extern void tram_pauline_cue_barely(struct Cue *, struct TramPaulineCue *, u32 pressed, u32 released); // Cue - Barely
-extern void tram_pauline_cue_miss(struct Cue *, struct TramPaulineCue *); // Cue - Miss
+extern void tram_pauline_cue_barely(struct Cue *cue, struct TramPaulineCue *info, u32 pressed, u32 released); // Cue - Barely
+extern void tram_pauline_cue_miss(struct Cue *cue, struct TramPaulineCue *info); // Cue - Miss
 extern void tram_pauline_input_event(u32 pressed, u32 released); // Input Event
 extern void tram_pauline_common_beat_animation(void); // Common Event 0 (Beat Animation)
 extern void tram_pauline_common_display_text(const char *); // Common Event 1 (Display Text)
