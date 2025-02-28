@@ -17,7 +17,11 @@ enum TramPaulineVersionsEnum {
 // Engine Types:
 struct TramPaulineEngineData {
     u8 version;
-    u8 pad[0x47];
+    u8 pad[0x3b];
+    s16 unk2; // practice-related sprite
+    s16 unk3; // other practice-related sprite
+    u8 unk;
+    u8 pad2[0x7];
 };
 
 struct TramPaulineCue {

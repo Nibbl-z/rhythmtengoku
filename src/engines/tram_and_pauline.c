@@ -39,7 +39,26 @@ void tram_pauline_init_gfx1(void) {
 
 #include "asm/engines/tram_and_pauline/asm_08040314.s"
 
-#include "asm/engines/tram_and_pauline/asm_08040434.s"
+
+void func_08040434(u32 arg0) { 
+    gTramPauline->unk = arg0;
+    
+    switch (arg0) {
+        case 0:
+            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0x50, 0x40);
+            break;
+        case 1:
+            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0xa0, 0x40);
+            break;
+        case 2:
+            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0x78, 0x40);
+            break;
+        case 3:
+            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0x78, 0x40);
+            sprite_set_visible(gSpriteHandler, gTramPauline->unk3, FALSE);
+            break;
+    }
+}
 
 #include "asm/engines/tram_and_pauline/asm_080404c4.s"
 
