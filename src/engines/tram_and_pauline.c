@@ -92,7 +92,15 @@ void tram_pauline_cue_miss(struct Cue *cue, struct TramPaulineCue *info) {
 void tram_pauline_input_event(u32 pressed, u32 released) {
 }
 
-#include "asm/engines/tram_and_pauline/asm_08040b24.s"
+void tram_pauline_common_beat_animation(void) {
+    u8 i;
+    
+    for (i = 0; i <= 1; i++) {
+        if (gTramPauline->foxes[i].unk <= 1) {
+           gTramPauline->foxes[i].unk4 = 0;
+        }
+    }
+}
 
 #include "asm/engines/tram_and_pauline/asm_08040b58.s"
 
