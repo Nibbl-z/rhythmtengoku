@@ -26,8 +26,9 @@ struct TramPaulineEngineData {
         u32 unk4;
         u8 pad2[0x4];
     } foxes[2];
-    u8 pad[0x10];
-    s16 unk2; // practice-related sprite
+    u8 pad[0xc];
+    struct BitmapFontOBJ *font;
+    s16 textSprite; // practice-related sprite (definitely the text sprite)
     s16 unk3; // other practice-related sprite
     u8 unk;
     s32 curtainScroll;

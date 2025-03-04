@@ -45,16 +45,16 @@ void func_08040434(u32 arg0) {
     
     switch (arg0) {
         case 0:
-            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0x50, 0x40);
+            sprite_set_x_y(gSpriteHandler, gTramPauline->textSprite, 0x50, 0x40);
             break;
         case 1:
-            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0xa0, 0x40);
+            sprite_set_x_y(gSpriteHandler, gTramPauline->textSprite, 0xa0, 0x40);
             break;
         case 2:
-            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0x78, 0x40);
+            sprite_set_x_y(gSpriteHandler, gTramPauline->textSprite, 0x78, 0x40);
             break;
         case 3:
-            sprite_set_x_y(gSpriteHandler, gTramPauline->unk2, 0x78, 0x40);
+            sprite_set_x_y(gSpriteHandler, gTramPauline->textSprite, 0x78, 0x40);
             sprite_set_visible(gSpriteHandler, gTramPauline->unk3, FALSE);
             break;
     }
@@ -125,6 +125,17 @@ void tram_pauline_common_beat_animation(void) {
     }
 }
 
-#include "asm/engines/tram_and_pauline/asm_08040b58.s"
+void tram_pauline_common_display_text(const char *text) {
+    struct PrintedTextAnim *textAnim;
+    
+    if (text == NULL) {
+        sprite_set_visible(gSpriteHandler, gTramPauline->textSprite, FALSE);
+    } else {
+        delete_bmp_font_obj_text_anim(gTramPauline->font, gTramPauline->textSprite);
+        textAnim = bmp_font_obj_print_c(gTramPauline->font, text, 1, 0xc);
+        sprite_set_anim(gSpriteHandler, gTramPauline->textSprite, textAnim->frames, 0, 1, 0, 0);
+        sprite_set_visible(gSpriteHandler, gTramPauline->textSprite, TRUE);
+    }
+}
 
 #include "asm/engines/tram_and_pauline/asm_08040bd4.s"
