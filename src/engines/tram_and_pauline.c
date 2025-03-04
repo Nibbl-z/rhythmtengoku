@@ -64,7 +64,30 @@ void func_08040434(u32 arg0) {
 
 #include "asm/engines/tram_and_pauline/asm_08040718.s"
 
-#include "asm/engines/tram_and_pauline/asm_080409cc.s"
+void tram_pauline_engine_update() {
+    s32 unk;
+    s32 unk2;
+    s16 pos;
+    
+    func_08040718();
+
+    // this is probably the curtains opening thing
+    
+    if (gTramPauline->version != 1) {
+        return;
+    }
+
+    if (gTramPauline->curtainScroll > 0x9fff) {
+        return;
+    }
+
+    unk = ticks_to_frames(0xc0);
+    gTramPauline->curtainScroll += 0xa000 / unk;
+
+    pos = gTramPauline->curtainScroll * 0x100 >> 0x10;
+    
+    scene_set_bg_layer_pos(BG_LAYER_1, 0, pos);
+}
 
 void tram_pauline_engine_stop(void) {
 }

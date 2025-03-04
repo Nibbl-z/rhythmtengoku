@@ -30,7 +30,7 @@ struct TramPaulineEngineData {
     s16 unk2; // practice-related sprite
     s16 unk3; // other practice-related sprite
     u8 unk;
-    u8 pad2[0x7];
+    s32 curtainScroll;
 };
 
 struct TramPaulineCue {
