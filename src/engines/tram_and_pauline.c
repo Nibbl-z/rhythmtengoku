@@ -55,7 +55,7 @@ void func_08040434(u32 arg0) {
             break;
         case 3:
             sprite_set_x_y(gSpriteHandler, gTramPauline->textSprite, 0x78, 0x40);
-            sprite_set_visible(gSpriteHandler, gTramPauline->unk3, FALSE);
+            sprite_set_visible(gSpriteHandler, gTramPauline->skipTutorialSprite, FALSE);
             break;
     }
 }
@@ -138,4 +138,13 @@ void tram_pauline_common_display_text(const char *text) {
     }
 }
 
-#include "asm/engines/tram_and_pauline/asm_08040bd4.s"
+void tram_pauline_common_init_tutorial(struct Scene *skipDestination) {
+    if (skipDestination != NULL) {
+        gameplay_enable_tutorial(TRUE);
+        gameplay_set_skip_destination(skipDestination);
+        sprite_set_visible(gSpriteHandler, gTramPauline->skipTutorialSprite, TRUE);
+    } else {
+        gameplay_enable_tutorial(FALSE);
+        sprite_set_visible(gSpriteHandler, gTramPauline->skipTutorialSprite, FALSE);
+    }
+}
