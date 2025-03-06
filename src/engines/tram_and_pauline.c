@@ -41,7 +41,7 @@ void tram_pauline_init_gfx1(void) {
 
 
 void func_08040434(u32 arg0) { 
-    gTramPauline->unk = arg0;
+    gTramPauline->unk_40 = arg0;
     
     switch (arg0) {
         case 0:
@@ -69,7 +69,7 @@ void tram_pauline_engine_update() {
     s32 unk2;
     s16 pos;
     
-    func_08040718();
+    func_08040718(); // looks like this one updates the positions of the foxes.. lots of math... eek..
 
     // this is probably the curtains opening thing
     
@@ -96,7 +96,25 @@ void tram_pauline_cue_spawn(struct Cue *cue, struct TramPaulineCue *info, u32 ch
     info->unk = character;
 }
 
-#include "asm/engines/tram_and_pauline/asm_08040a20.s"
+u32 tram_pauline_cue_update(struct Cue *cue, struct TramPaulineCue *info, u32 duration) {
+    u8 i;
+    s32 unk;
+
+    for (i = 0; i < 2; i++) {
+        sprite_set_x_y(gSpriteHandler, 
+            gTramPauline->unkSprites[i], 
+            gTramPauline->foxes[i].x, 
+            gTramPauline->foxes[i].y);
+    }
+
+    unk = ticks_to_frames(0x30);
+
+    if (duration > unk) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 void tram_pauline_cue_despawn(struct Cue *cue, struct TramPaulineCue *info) {
 }
@@ -119,8 +137,8 @@ void tram_pauline_common_beat_animation(void) {
     u8 i;
     
     for (i = 0; i <= 1; i++) {
-        if (gTramPauline->foxes[i].unk <= 1) {
-           gTramPauline->foxes[i].unk4 = 0;
+        if (gTramPauline->foxes[i].unk_5 <= 1) {
+           gTramPauline->foxes[i].unk_F = 0;
         }
     }
 }
