@@ -51,14 +51,14 @@ extern void mr_upbeat_engine_event_stub(void); // Engine Event 0x06 (STUB)
 extern void func_08035314(); // Engine Event 0x01 (?)
 extern void mr_upbeat_engine_update(void); // Game Engine Update
 extern void mr_upbeat_engine_stop(void); // Game Engine Stop
-extern void mr_upbeat_cue_spawn(struct Cue *, struct MrUpbeatCue *, u32 unused); // Cue - Spawn
+extern void mr_upbeat_cue_spawn(void); // Cue - Spawn
 extern u32  mr_upbeat_cue_update(struct Cue *, struct MrUpbeatCue *, u32 runningTime, u32 duration); // Cue - Update
-extern void mr_upbeat_cue_despawn(struct Cue *, struct MrUpbeatCue *); // Cue - Despawn
+extern void mr_upbeat_cue_despawn(void); // Cue - Despawn
 // extern ? func_08035358(?);
 extern void mr_upbeat_cue_hit(struct Cue *, struct MrUpbeatCue *, u32 pressed, u32 released); // Cue - Hit
 extern void mr_upbeat_cue_barely(struct Cue *, struct MrUpbeatCue *, u32 pressed, u32 released); // Cue - Barely
 extern void mr_upbeat_cue_miss(struct Cue *, struct MrUpbeatCue *); // Cue - Miss
-extern void mr_upbeat_input_event(u32 pressed, u32 released); // Input Event
+extern void mr_upbeat_input_event(void); // Input Event
 extern void mr_upbeat_common_beat_animation(void); // Common Event 0 (Beat Animation, Unimplemented)
 extern void mr_upbeat_common_display_text(void); // Common Event 1 (Display Text, Unimplemented)
 extern void mr_upbeat_common_init_tutorial(void); // Common Event 2 (Init. Tutorial, Unimplemented)
