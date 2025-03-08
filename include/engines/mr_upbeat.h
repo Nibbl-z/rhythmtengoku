@@ -8,16 +8,28 @@
 
 // Engine Types:
 struct MrUpbeatEngineData {
-    u8 pad[0x30];
-    u8 unk_30;
-    u8 pad4[0x3];
-    s16 sprite;
-
-    u32 unk_38;
+    u8 version;
+    u8 pad[0xe];
+    struct Metronome {
+        struct AffineSprite *sprite;
+        u32 unk_4;
+        u32 unk_8;
+        u32 unk_c;
+        u32 unk_10;
+        u32 unk_14;
+        u32 unk_18;
+        u32 unk_2c;
+        u8 unk_20;
+        u8 unk_21;
+    } metronome;
+    s16 sprite; // 34
+    u32 unk_38; // 38
+    u32 unk_3c; // 3c
     // 54
-    u8 pad2[0x14];
-    u16 score; // this is probably the score
-    u16 pad3;
+    u8 pad2[0xd];
+    u16 unk_4e; // 4c
+    u16 unk_50; // 4e
+    u8 unk_52;
 };
 
 struct MrUpbeatCue {
