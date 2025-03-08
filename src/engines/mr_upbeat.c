@@ -15,13 +15,20 @@ asm(".include \"include/gba.inc\""); // Temporary
 
 #include "asm/engines/mr_upbeat/asm_08034d6c.s"
 
-#include "asm/engines/mr_upbeat/asm_08034db0.s"
+// save highscore?
+void func_08034db0(void) {
+    D_030046a8->data.unk294[0] = gMrUpbeat->score;
+}
 
 #include "asm/engines/mr_upbeat/asm_08034dd0.s"
 
 #include "asm/engines/mr_upbeat/asm_08034e40.s"
 
-#include "asm/engines/mr_upbeat/asm_08034e84.s"
+void func_08034e84(void) {
+    func_08034e40();
+    sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->sprite, 0);
+    play_sound(&s_metro_count1_seqData);
+}
 
 #include "asm/engines/mr_upbeat/asm_08034eb4.s"
 
@@ -65,7 +72,9 @@ void mr_upbeat_init_gfx1(void) {
 void mr_upbeat_engine_event_stub(void) {
 }
 
-#include "asm/engines/mr_upbeat/asm_08035314.s"
+void func_08035314(u32 arg0) {
+    gMrUpbeat->unk_38 = arg0;
+}
 
 void mr_upbeat_engine_update(void) {
     func_08034eb4();
@@ -89,7 +98,9 @@ void mr_upbeat_cue_despawn(void) {
 
 #include "asm/engines/mr_upbeat/asm_080353bc.s"
 
-#include "asm/engines/mr_upbeat/asm_080353ec.s"
+void mr_upbeat_cue_miss(void) {
+    func_08035094(gMrUpbeat->unk_30);
+}
 
 void mr_upbeat_input_event(void) {
     func_08034ff4();

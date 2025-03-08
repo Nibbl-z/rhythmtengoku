@@ -8,7 +8,16 @@
 
 // Engine Types:
 struct MrUpbeatEngineData {
-    u8 pad[0x54];
+    u8 pad[0x30];
+    u8 unk_30;
+    u8 pad4[0x3];
+    s16 sprite;
+
+    u32 unk_38;
+    // 54
+    u8 pad2[0x14];
+    u16 score; // this is probably the score
+    u16 pad3;
 };
 
 struct MrUpbeatCue {
@@ -48,7 +57,7 @@ extern void mr_upbeat_init_gfx2(void); // Graphics Init. 2
 extern void mr_upbeat_init_gfx1(void); // Graphics Init. 1
 extern void mr_upbeat_engine_start(u32 version); // Game Engine Start
 extern void mr_upbeat_engine_event_stub(void); // Engine Event 0x06 (STUB)
-extern void func_08035314(); // Engine Event 0x01 (?)
+extern void func_08035314(u32 arg0); // Engine Event 0x01 (?)
 extern void mr_upbeat_engine_update(void); // Game Engine Update
 extern void mr_upbeat_engine_stop(void); // Game Engine Stop
 extern void mr_upbeat_cue_spawn(void); // Cue - Spawn
@@ -57,7 +66,7 @@ extern void mr_upbeat_cue_despawn(void); // Cue - Despawn
 // extern ? func_08035358(?);
 extern void mr_upbeat_cue_hit(struct Cue *, struct MrUpbeatCue *, u32 pressed, u32 released); // Cue - Hit
 extern void mr_upbeat_cue_barely(struct Cue *, struct MrUpbeatCue *, u32 pressed, u32 released); // Cue - Barely
-extern void mr_upbeat_cue_miss(struct Cue *, struct MrUpbeatCue *); // Cue - Miss
+extern void mr_upbeat_cue_miss(void); // Cue - Miss
 extern void mr_upbeat_input_event(void); // Input Event
 extern void mr_upbeat_common_beat_animation(void); // Common Event 0 (Beat Animation, Unimplemented)
 extern void mr_upbeat_common_display_text(void); // Common Event 1 (Display Text, Unimplemented)
