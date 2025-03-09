@@ -34,8 +34,7 @@ void func_08034db0(void) {
     D_030046a8->data.unk294[0] = gMrUpbeat->unk_50;
 }
 
-
-
+// initialize metronome
 void func_08034dd0(void) {
     struct Metronome *metronome = &gMrUpbeat->metronome;
     metronome->sprite = create_affine_sprite(anim_metronome_pendulum, 0, 0x78, 0x90, 0x480a, 0x100, 0, 1, 0, 0, 0);
@@ -51,7 +50,13 @@ void func_08034dd0(void) {
     affine_sprite_set_rotation(metronome->sprite, (s16)metronome->unk_10);
 }
 
-#include "asm/engines/mr_upbeat/asm_08034e40.s"
+void func_08034e40(void) {
+    if (-1 < gMrUpbeat->unk_3c) {
+        force_cancel_task(gMrUpbeat->unk_3c);
+    }
+
+    gMrUpbeat->unk_3c = palette_fade_out(get_current_mem_id(), 0x14, 1, metronome_pal[2], 0, D_03004b10.objPalette[2]);
+}
 
 void func_08034e84(void) {
     func_08034e40();
@@ -61,9 +66,40 @@ void func_08034e84(void) {
 
 #include "asm/engines/mr_upbeat/asm_08034eb4.s"
 
-#include "asm/engines/mr_upbeat/asm_08034f18.s"
+void func_08034f18(u32 arg0) {
+    u32 unk;
+    u32 unk2;
+    
+    struct Metronome *metronome = &gMrUpbeat->metronome;
+    
+    if (metronome->unk_21 == 0) {
+        play_sound(&s_metro_hit_seqData);
+        metronome->unk_14 = 0;
 
-#include "asm/engines/mr_upbeat/asm_08034f64.s"
+        unk = ticks_to_frames(arg0);
+        metronome->unk_18 = unk;
+        metronome->unk_1c = unk / 2;
+        unk2 = metronome->unk_8;
+        metronome->unk_8 = metronome->unk_c;
+        metronome->unk_c = unk2;
+
+        metronome->unk_20 = metronome->unk_20 ^ 1; // huh
+    }
+}
+
+// initialize mr upbeat
+void func_08034f64(void) {
+    struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
+    
+    mrUpbeat->sprite = sprite_create(gSpriteHandler, anim_mr_upbeat_l_step, 0x7f, 0x40, 0x40, 0x4800, 1, 0x7f, 0);
+    sprite_set_x_y(gSpriteHandler, mrUpbeat->sprite, 0x78, 0x50);
+
+    mrUpbeat->shadow = sprite_create(gSpriteHandler, anim_mr_upbeat_shadow, 1, 0x78, 0x50, 0x4814, 0, 0, 0);
+    // these might be enums?
+    mrUpbeat->unk_9 = 1;
+    mrUpbeat->unk_8 = 2;
+    mrUpbeat->unk_10 = 0;
+}
 
 #include "asm/engines/mr_upbeat/asm_08034ff4.s"
 
@@ -72,7 +108,19 @@ void func_08034e84(void) {
 void func_08035168(void) {
 }
 
-#include "asm/engines/mr_upbeat/asm_0803516c.s"
+void func_0803516c(void) {
+    struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
+
+    sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, mr_upbeat_game_over_anim[gMrUpbeat->unk_52][mrUpbeat->unk_c], 0, 1, 0x7f, 0);
+
+    if (gMrUpbeat->unk_52) {
+        gameplay_display_text(&D_0805a674);
+        play_sound(&s_intro_pat1_seqData);
+    } else {
+        gameplay_display_text(&D_0805a684);
+        play_sound(&s_gameover_fan_seqData);
+    }
+}
 
 void mr_upbeat_init_gfx3(void) {
     func_0800c604(0);
@@ -140,16 +188,57 @@ void mr_upbeat_engine_stop(void) {
 void mr_upbeat_cue_spawn(void) {
 }
 
-#include "asm/engines/mr_upbeat/asm_08035338.s"
+u32 mr_upbeat_cue_update(struct Cue *cue, struct MrUpbeatCue *info, u32 runningTime) {
+    if (runningTime > ticks_to_frames(0x78)) {
+        return TRUE;   
+    } else {
+        return FALSE;
+    }
+}
 
 void mr_upbeat_cue_despawn(void) {
 }
 
-#include "asm/engines/mr_upbeat/asm_08035358.s"
 
-#include "asm/engines/mr_upbeat/asm_0803538c.s"
+u32 func_08035358(void) {
+    u32 unk;
+    
+    if (gMrUpbeat->mrUpbeat.unk_9 == 0) {
+        unk = FALSE;
+        if (gMrUpbeat->metronome.unk_20 == FALSE) { 
+            unk = TRUE;
+        }
+    } else {
+        unk = FALSE;
+        if (gMrUpbeat->metronome.unk_20 == TRUE) { 
+            unk = TRUE;
+        }
+    }
 
-#include "asm/engines/mr_upbeat/asm_080353bc.s"
+    return unk;
+}
+
+void mr_upbeat_cue_hit(struct Cue *cue, struct MrUpbeatCue *info, u32 pressed, u32 released) {
+    struct Metronome *metronome = &gMrUpbeat->metronome;
+    
+    func_08034ff4();
+    if (func_08035358() != FALSE) {
+        gameplay_ignore_this_cue_result();
+        gameplay_add_cue_result_miss(0);
+        func_08035094(metronome->unk_20);
+    }
+}
+
+void mr_upbeat_cue_barely(struct Cue *cue, struct MrUpbeatCue *info, u32 pressed, u32 released) {
+    struct Metronome *metronome = &gMrUpbeat->metronome;
+    
+    func_08034ff4();
+    if (func_08035358() != FALSE) {
+        gameplay_ignore_this_cue_result();
+        gameplay_add_cue_result_miss(0);
+        func_08035094(metronome->unk_20);
+    }
+}
 
 void mr_upbeat_cue_miss(void) {
     func_08035094(gMrUpbeat->metronome.unk_20);

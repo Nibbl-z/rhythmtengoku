@@ -9,7 +9,15 @@
 // Engine Types:
 struct MrUpbeatEngineData {
     u8 version;
-    u8 pad[0xe];
+    u8 pad[0x3];
+    struct MrUpbeat {
+        s16 sprite;
+        s16 shadow;
+        u8 unk_8;
+        u8 unk_9;
+        u16 unk_10;
+        u8 unk_c;
+    } mrUpbeat;
     struct Metronome {
         struct AffineSprite *sprite;
         u32 unk_4;
@@ -18,20 +26,19 @@ struct MrUpbeatEngineData {
         u32 unk_10;
         u32 unk_14;
         u32 unk_18;
-        u32 unk_2c;
+        u32 unk_1c;
         u8 unk_20;
         u8 unk_21;
     } metronome;
     s16 sprite; // 34
     u32 unk_38; // 38
-    u32 unk_3c; // 3c
+    s32 unk_3c; // 3c
     // 54
     u8 pad2[0xd];
     u16 unk_4e; // 4c
     u16 unk_50; // 4e
     u8 unk_52;
 };
-
 struct MrUpbeatCue {
     /* add fields here */
 };
@@ -73,7 +80,7 @@ extern void func_08035314(u32 arg0); // Engine Event 0x01 (?)
 extern void mr_upbeat_engine_update(void); // Game Engine Update
 extern void mr_upbeat_engine_stop(void); // Game Engine Stop
 extern void mr_upbeat_cue_spawn(void); // Cue - Spawn
-extern u32  mr_upbeat_cue_update(struct Cue *, struct MrUpbeatCue *, u32 runningTime, u32 duration); // Cue - Update
+extern u32  mr_upbeat_cue_update(struct Cue *, struct MrUpbeatCue *, u32 runningTime); // Cue - Update
 extern void mr_upbeat_cue_despawn(void); // Cue - Despawn
 // extern ? func_08035358(?);
 extern void mr_upbeat_cue_hit(struct Cue *, struct MrUpbeatCue *, u32 pressed, u32 released); // Cue - Hit
