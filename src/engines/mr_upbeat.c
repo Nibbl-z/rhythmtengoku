@@ -8,8 +8,26 @@ asm(".include \"include/gba.inc\""); // Temporary
 
 /* MR. UPBEAT */
 
+// initialize score sprites?
+void func_08034b14(void) {
+    u32 i;
+    gMrUpbeat->unk_40 = sprite_create(gSpriteHandler, anim_metronome_score_counter, 0, 0xd8, 0x14, 0x4801, 0, 0, 0);
 
-#include "asm/engines/mr_upbeat/asm_08034b14.s"
+    for (i = 0; i < 3; i++) {
+        gMrUpbeat->unk_42[i] = sprite_create(gSpriteHandler, anim_metronome_score_num, 0, 0xd8, 0x14, 0x4800, 0, 0x7f, 0);
+    }
+
+    for (i = 0; i < 3; i++) {
+        gMrUpbeat->unk_48[i] = sprite_create(gSpriteHandler, anim_mr_upbeat_high_score_num , 0, 0xd8, 0x14, 0x4800, 0, 0x7f, 0);
+    }
+
+    gMrUpbeat->unk_4e = 0;
+    gMrUpbeat->unk_50 = D_030046a8->data.unk294[0];
+
+    func_08034bf4();
+
+    gMrUpbeat->unk_52 = 0;
+}
 
 #include "asm/engines/mr_upbeat/asm_08034bf4.s"
 
@@ -58,13 +76,32 @@ void func_08034e40(void) {
     gMrUpbeat->unk_3c = palette_fade_out(get_current_mem_id(), 0x14, 1, metronome_pal[2], 0, D_03004b10.objPalette[2]);
 }
 
-void func_08034e84(void) {
+void func_08034e84(u32 unk) {
     func_08034e40();
     sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->sprite, 0);
     play_sound(&s_metro_count1_seqData);
 }
 
-#include "asm/engines/mr_upbeat/asm_08034eb4.s"
+void func_08034eb4(void) {
+    struct Metronome *metronome = &gMrUpbeat->metronome;
+    u32 unk;
+    s32 rotation;
+    
+    if (metronome->unk_14 < metronome->unk_18) {
+        metronome->unk_14++;
+
+        if (metronome->unk_14 == metronome->unk_1c) {
+            func_08034e84(0);
+        }
+
+        unk = math_lerp(metronome->unk_8, metronome->unk_c, metronome->unk_14, metronome->unk_18);
+        rotation = FIXED_TO_INT(coss(unk) * metronome->unk_10);
+
+        affine_sprite_set_rotation(
+            metronome->sprite, (s16)rotation
+        );
+    }
+}
 
 void func_08034f18(u32 arg0) {
     u32 unk;
@@ -101,7 +138,26 @@ void func_08034f64(void) {
     mrUpbeat->unk_10 = 0;
 }
 
-#include "asm/engines/mr_upbeat/asm_08034ff4.s"
+void func_08034ff4(void) {
+    struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
+    
+    play_sound(&s_tap_kick_monky_seqData);
+
+    switch(mrUpbeat->unk_8) {
+        case 1:
+            sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, &anim_mr_upbeat_l_step, 0, 1, 0x7f, 0);
+            mrUpbeat->unk_9 = 1;
+            mrUpbeat->unk_8 = 2;
+            sprite_set_anim_cel(gSpriteHandler, mrUpbeat->shadow, 1);
+            break;
+        case 2:
+            sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, &anim_mr_upbeat_r_step, 0, 1, 0x7f, 0);
+            mrUpbeat->unk_9 = 0;
+            mrUpbeat->unk_8 = 1;
+            sprite_set_anim_cel(gSpriteHandler, mrUpbeat->shadow, 2);
+            break;
+    }
+}
 
 #include "asm/engines/mr_upbeat/asm_08035094.s"
 

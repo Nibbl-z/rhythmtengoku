@@ -33,8 +33,9 @@ struct MrUpbeatEngineData {
     s16 sprite; // 34
     u32 unk_38; // 38
     s32 unk_3c; // 3c
-    // 54
-    u8 pad2[0xd];
+    s16 unk_40;
+    s16 unk_42[3];
+    s16 unk_48[3];
     u16 unk_4e; // 4c
     u16 unk_50; // 4e
     u8 unk_52;
@@ -63,7 +64,7 @@ extern void func_08034d6c(); // Engine Event 0x03 (?)
 extern void func_08034db0(); // Engine Event 0x04 (?)
 // extern ? func_08034dd0(?);
 // extern ? func_08034e40(?);
-extern void func_08034e84(); // Engine Event 0x02 (?)
+extern void func_08034e84(u32 unk); // Engine Event 0x02 (?)
 // extern ? func_08034eb4(?);
 extern void func_08034f18(); // Engine Event 0x00 (?)
 // extern ? func_08034f64(?);
