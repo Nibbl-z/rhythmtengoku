@@ -29,7 +29,62 @@ void func_08034b14(void) {
     gMrUpbeat->unk_52 = 0;
 }
 
-#include "asm/engines/mr_upbeat/asm_08034bf4.s"
+void func_08034bf4(void) {
+    u32 unk;
+    u32 i;
+    u8 unk2;
+    s32 unk3;
+    u32 unk_50;
+    u32 unk_4e;
+
+    unk_4e = gMrUpbeat->unk_4e;
+    unk = 1;
+    
+    if (9 < unk_4e) {
+        unk = 2;
+    }
+    if (99 < unk_4e) {
+        unk++;
+    }
+
+    for (i = 0; i < 3; i++) {
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_42[i], 0x7f);
+    }
+
+    unk3 = (unk - 1) * 5 + 0xd8;
+
+    for (i = 0; i < unk; i++) {
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_42[i], unk_4e % 10);
+        unk_4e = unk_4e / 10;
+        sprite_set_x(gSpriteHandler, gMrUpbeat->unk_42[i], unk3); 
+
+        unk3 = unk3 + -10;
+    }
+
+    unk_50 = gMrUpbeat->unk_50;
+    unk = 1;
+    
+    if (9 < unk_50) {
+        unk = 2;
+    }
+    if (99 < unk_50) {
+        unk++;
+    }
+
+    for (i = 0; i < 3; i++) {
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_48[i], 0x7f);
+    }
+
+    unk3 = (unk - 1) * 2 + 0xd7;
+
+    for (i = 0; i < unk; i++) {
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_48[i], unk_50 % 10);
+        unk_50 = unk_50 / 10;
+        sprite_set_x(gSpriteHandler, gMrUpbeat->unk_48[i], unk3); 
+
+        unk3 -= 5;
+    }
+}
 
 void func_08034d6c(void) {
     gMrUpbeat->unk_4e++;
