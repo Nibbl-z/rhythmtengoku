@@ -5,152 +5,154 @@ asm(".include \"include/gba.inc\""); // Temporary
 // For readability.
 #define gMrUpbeat ((struct MrUpbeatEngineData *)gCurrentEngineData)
 
-
 /* MR. UPBEAT */
 
-// initialize score sprites?
-void func_08034b14(void) {
+// Init. Score Counter
+void mr_upbeat_init_score_counter(void) {
     u32 i;
-    gMrUpbeat->unk_40 = sprite_create(gSpriteHandler, anim_metronome_score_counter, 0, 0xd8, 0x14, 0x4801, 0, 0, 0);
+    gMrUpbeat->scoreCounterSprite = sprite_create(gSpriteHandler, anim_metronome_score_counter, 0, 216, 20, 0x4801, 0, 0, 0);
 
     for (i = 0; i < 3; i++) {
-        gMrUpbeat->unk_42[i] = sprite_create(gSpriteHandler, anim_metronome_score_num, 0, 0xd8, 0x14, 0x4800, 0, 0x7f, 0);
+        gMrUpbeat->scoreNumberSprites[i] = sprite_create(gSpriteHandler, anim_metronome_score_num, 0, 216, 20, 0x4800, 0, 0x7f, 0);
     }
 
     for (i = 0; i < 3; i++) {
-        gMrUpbeat->unk_48[i] = sprite_create(gSpriteHandler, anim_mr_upbeat_high_score_num , 0, 0xd8, 0x14, 0x4800, 0, 0x7f, 0);
+        gMrUpbeat->highscoreNumberSprites[i] = sprite_create(gSpriteHandler, anim_mr_upbeat_high_score_num , 0, 216, 20, 0x4800, 0, 0x7f, 0);
     }
 
-    gMrUpbeat->unk_4e = 0;
-    gMrUpbeat->unk_50 = D_030046a8->data.unk294[0];
+    gMrUpbeat->score = 0;
+    gMrUpbeat->highscore = D_030046a8->data.unk294[0];
 
-    func_08034bf4();
+    mr_upbeat_update_score_counter();
 
-    gMrUpbeat->unk_52 = 0;
+    gMrUpbeat->isHighscore = FALSE;
 }
 
-void func_08034bf4(void) {
-    u32 unk;
+// Update Score Counter Sprites
+void mr_upbeat_update_score_counter(void) {
+    u32 digits;
     u32 i;
-    u8 unk2;
-    s32 unk3;
-    u32 unk_50;
-    u32 unk_4e;
+    s32 digitX;
+    u32 score;
+    u32 highscore;
 
-    unk_4e = gMrUpbeat->unk_4e;
-    unk = 1;
+    score = gMrUpbeat->score;
+    digits = 1;
     
-    if (9 < unk_4e) {
-        unk = 2;
+    if (9 < score) {
+        digits = 2;
     }
-    if (99 < unk_4e) {
-        unk++;
+    if (99 < score) {
+        digits++;
     }
 
     for (i = 0; i < 3; i++) {
-        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_42[i], 0x7f);
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->scoreNumberSprites[i], 0x7f);
     }
 
-    unk3 = (unk - 1) * 5 + 0xd8;
+    digitX = (digits - 1) * 5 + 216;
 
-    for (i = 0; i < unk; i++) {
-        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_42[i], unk_4e % 10);
-        unk_4e = unk_4e / 10;
-        sprite_set_x(gSpriteHandler, gMrUpbeat->unk_42[i], unk3); 
+    for (i = 0; i < digits; i++) {
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->scoreNumberSprites[i], score % 10);
+        score = score / 10;
+        sprite_set_x(gSpriteHandler, gMrUpbeat->scoreNumberSprites[i], digitX); 
 
-        unk3 = unk3 + -10;
+        digitX -= 10;
     }
 
-    unk_50 = gMrUpbeat->unk_50;
-    unk = 1;
+    highscore = gMrUpbeat->highscore;
+    digits = 1;
     
-    if (9 < unk_50) {
-        unk = 2;
+    if (9 < highscore) {
+        digits = 2;
     }
-    if (99 < unk_50) {
-        unk++;
+    if (99 < highscore) {
+        digits++;
     }
 
     for (i = 0; i < 3; i++) {
-        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_48[i], 0x7f);
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->highscoreNumberSprites[i], 0x7f);
     }
 
-    unk3 = (unk - 1) * 2 + 0xd7;
+    digitX = (digits - 1) * 2 + 215;
 
-    for (i = 0; i < unk; i++) {
-        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->unk_48[i], unk_50 % 10);
-        unk_50 = unk_50 / 10;
-        sprite_set_x(gSpriteHandler, gMrUpbeat->unk_48[i], unk3); 
+    for (i = 0; i < digits; i++) {
+        sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->highscoreNumberSprites[i], highscore % 10);
+        highscore = highscore / 10;
+        sprite_set_x(gSpriteHandler, gMrUpbeat->highscoreNumberSprites[i], digitX); 
 
-        unk3 -= 5;
+        digitX -= 5;
     }
 }
 
+// Engine Event 0x03 (Increment Score)
 void func_08034d6c(void) {
-    gMrUpbeat->unk_4e++;
+    gMrUpbeat->score++;
 
-    if (99 < gMrUpbeat->unk_4e) {
-        gMrUpbeat->unk_4e = 99;
+    if (99 < gMrUpbeat->score) {
+        gMrUpbeat->score = 99;
     }
 
-    if (gMrUpbeat->unk_4e > gMrUpbeat->unk_50) {
-        gMrUpbeat->unk_50 = gMrUpbeat->unk_4e;
-        gMrUpbeat->unk_52 = 1;
+    if (gMrUpbeat->score > gMrUpbeat->highscore) {
+        gMrUpbeat->highscore = gMrUpbeat->score;
+        gMrUpbeat->isHighscore = TRUE;
     }
 
-    func_08034bf4();
+    mr_upbeat_update_score_counter();
 }
 
-// save highscore?
-
+// Engine Event 0x04 (Save Highscore)
 void func_08034db0(void) {
-    D_030046a8->data.unk294[0] = gMrUpbeat->unk_50;
+    D_030046a8->data.unk294[0] = gMrUpbeat->highscore;
 }
 
-// initialize metronome
-void func_08034dd0(void) {
+// Init. Metronome
+void mr_upbeat_init_metronome(void) {
     struct Metronome *metronome = &gMrUpbeat->metronome;
-    metronome->sprite = create_affine_sprite(anim_metronome_pendulum, 0, 0x78, 0x90, 0x480a, 0x100, 0, 1, 0, 0, 0);
-    metronome->unk_4 = 0;
-    metronome->unk_10 = 0x168;
-    metronome->unk_18 = 0;
-    metronome->unk_14 = 0;
-    metronome->unk_20 = 0;
-    metronome->unk_8 = 0x400;
-    metronome->unk_c = 0;
-    metronome->unk_21 = 0;
+    metronome->sprite = create_affine_sprite(anim_metronome_pendulum, 0, 120, 144, 0x480a, 256, 0, 1, 0, 0, 0);
+    metronome->unused = 0;
+    metronome->rotation = 360;
+    metronome->rotationMaxFrames = 0;
+    metronome->rotationFrames = 0;
+    metronome->direction = FALSE;
+    metronome->rotationStart = 1024;
+    metronome->rotationGoal = 0;
+    metronome->stopped = FALSE;
 
-    affine_sprite_set_rotation(metronome->sprite, (s16)metronome->unk_10);
+    affine_sprite_set_rotation(metronome->sprite, (s16)metronome->rotation);
 }
 
-void func_08034e40(void) {
-    if (-1 < gMrUpbeat->unk_3c) {
-        force_cancel_task(gMrUpbeat->unk_3c);
+// Fade Mr Upbeat's Light
+void mr_upbeat_fade_light(void) {
+    if (-1 < gMrUpbeat->fadeOutTask) {
+        force_cancel_task(gMrUpbeat->fadeOutTask);
     }
 
-    gMrUpbeat->unk_3c = palette_fade_out(get_current_mem_id(), 0x14, 1, metronome_pal[2], 0, D_03004b10.objPalette[2]);
+    gMrUpbeat->fadeOutTask = palette_fade_out(get_current_mem_id(), 0x14, 1, metronome_pal[2], 0, D_03004b10.objPalette[2]);
 }
 
+// Engine Event 0x02 (Mr. Upbeat Beep)
 void func_08034e84(u32 unk) {
-    func_08034e40();
+    mr_upbeat_fade_light();
     sprite_set_anim_cel(gSpriteHandler, gMrUpbeat->sprite, 0);
     play_sound(&s_metro_count1_seqData);
 }
 
-void func_08034eb4(void) {
+// Update Metronome
+void mr_upbeat_update_metronome(void) {
     struct Metronome *metronome = &gMrUpbeat->metronome;
-    u32 unk;
+    u32 lerpResult;
     s32 rotation;
     
-    if (metronome->unk_14 < metronome->unk_18) {
-        metronome->unk_14++;
+    if (metronome->rotationFrames < metronome->rotationMaxFrames) {
+        metronome->rotationFrames++;
 
-        if (metronome->unk_14 == metronome->unk_1c) {
+        if (metronome->rotationFrames == metronome->beepFrames) {
             func_08034e84(0);
         }
 
-        unk = math_lerp(metronome->unk_8, metronome->unk_c, metronome->unk_14, metronome->unk_18);
-        rotation = FIXED_TO_INT(coss(unk) * metronome->unk_10);
+        lerpResult = math_lerp(metronome->rotationStart, metronome->rotationGoal, metronome->rotationFrames, metronome->rotationMaxFrames);
+        rotation = FIXED_TO_INT(coss(lerpResult) * metronome->rotation);
 
         affine_sprite_set_rotation(
             metronome->sprite, (s16)rotation
@@ -158,73 +160,78 @@ void func_08034eb4(void) {
     }
 }
 
-void func_08034f18(u32 arg0) {
-    u32 unk;
-    u32 unk2;
+// Engine Event 0x00 (Swap Metronome Direction)
+void func_08034f18(u32 ticks) {
+    u32 frames;
+    u32 previousRotationStart;
     
     struct Metronome *metronome = &gMrUpbeat->metronome;
     
-    if (metronome->unk_21 == 0) {
+    if (metronome->stopped == FALSE) {
         play_sound(&s_metro_hit_seqData);
-        metronome->unk_14 = 0;
+        metronome->rotationFrames = 0;
 
-        unk = ticks_to_frames(arg0);
-        metronome->unk_18 = unk;
-        metronome->unk_1c = unk / 2;
-        unk2 = metronome->unk_8;
-        metronome->unk_8 = metronome->unk_c;
-        metronome->unk_c = unk2;
+        frames = ticks_to_frames(ticks);
+        metronome->rotationMaxFrames = frames;
+        metronome->beepFrames = frames / 2;
+        previousRotationStart = metronome->rotationStart;
+        metronome->rotationStart = metronome->rotationGoal;
+        metronome->rotationGoal = previousRotationStart;
 
-        metronome->unk_20 = metronome->unk_20 ^ 1; // huh
+        metronome->direction = metronome->direction ^ 1;
     }
 }
 
-// initialize mr upbeat
-void func_08034f64(void) {
+// Init. Mr Upbeat
+void mr_upbeat_init_mr_upbeat(void) {
     struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
     
-    mrUpbeat->sprite = sprite_create(gSpriteHandler, anim_mr_upbeat_l_step, 0x7f, 0x40, 0x40, 0x4800, 1, 0x7f, 0);
-    sprite_set_x_y(gSpriteHandler, mrUpbeat->sprite, 0x78, 0x50);
+    mrUpbeat->sprite = sprite_create(gSpriteHandler, anim_mr_upbeat_l_step, 0x7f, 64, 64, 0x4800, 1, 0x7f, 0);
+    sprite_set_x_y(gSpriteHandler, mrUpbeat->sprite, 120, 80);
 
-    mrUpbeat->shadow = sprite_create(gSpriteHandler, anim_mr_upbeat_shadow, 1, 0x78, 0x50, 0x4814, 0, 0, 0);
-    // these might be enums?
-    mrUpbeat->unk_9 = 1;
-    mrUpbeat->unk_8 = 2;
-    mrUpbeat->unk_10 = 0;
+    mrUpbeat->shadow = sprite_create(gSpriteHandler, anim_mr_upbeat_shadow, 1, 120, 80, 0x4814, 0, 0, 0);
+
+    mrUpbeat->side = TRUE;
+    mrUpbeat->nextSide = 2;
+    mrUpbeat->unused = 0;
 }
 
-void func_08034ff4(void) {
+// Mr. Upbeat Step
+void mr_upbeat_step(void) {
     struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
     
     play_sound(&s_tap_kick_monky_seqData);
 
-    switch(mrUpbeat->unk_8) {
+    switch(mrUpbeat->nextSide) {
         case 1:
-            sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, &anim_mr_upbeat_l_step, 0, 1, 0x7f, 0);
-            mrUpbeat->unk_9 = 1;
-            mrUpbeat->unk_8 = 2;
+            sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, anim_mr_upbeat_l_step, 0, 1, 0x7f, 0);
+            mrUpbeat->side = TRUE;
+            mrUpbeat->nextSide = 2;
             sprite_set_anim_cel(gSpriteHandler, mrUpbeat->shadow, 1);
             break;
         case 2:
-            sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, &anim_mr_upbeat_r_step, 0, 1, 0x7f, 0);
-            mrUpbeat->unk_9 = 0;
-            mrUpbeat->unk_8 = 1;
+            sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, anim_mr_upbeat_r_step, 0, 1, 0x7f, 0);
+            mrUpbeat->side = FALSE;
+            mrUpbeat->nextSide = 1;
             sprite_set_anim_cel(gSpriteHandler, mrUpbeat->shadow, 2);
             break;
     }
 }
 
+// Mr. Upbeat Trip (https://decomp.me/scratch/XJo9Q)
 #include "asm/engines/mr_upbeat/asm_08035094.s"
 
-void func_08035168(void) {
+// Stub Update Function
+void mr_upbeat_update_stub(void) {
 }
 
+// Engine Event 0x05 (Play Game Over Jingle)
 void func_0803516c(void) {
     struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
 
-    sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, mr_upbeat_game_over_anim[gMrUpbeat->unk_52][mrUpbeat->unk_c], 0, 1, 0x7f, 0);
+    sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, mr_upbeat_game_over_anim[gMrUpbeat->isHighscore][mrUpbeat->tripAnim], 0, 1, 0x7f, 0);
 
-    if (gMrUpbeat->unk_52) {
+    if (gMrUpbeat->isHighscore) {
         gameplay_display_text(&D_0805a674);
         play_sound(&s_intro_pat1_seqData);
     } else {
@@ -233,11 +240,13 @@ void func_0803516c(void) {
     }
 }
 
+// Graphics Init. 3
 void mr_upbeat_init_gfx3(void) {
     func_0800c604(0);
     gameplay_start_screen_fade_in();
 }
 
+// Graphics Init. 2
 void mr_upbeat_init_gfx2(void) {
     s32 task;
 
@@ -246,7 +255,7 @@ void mr_upbeat_init_gfx2(void) {
     run_func_after_task(task, mr_upbeat_init_gfx3, 0);
 }
 
-
+// Graphics Init. 1
 void mr_upbeat_init_gfx1(void) {
     s32 task;
 
@@ -255,23 +264,25 @@ void mr_upbeat_init_gfx1(void) {
     run_func_after_task(task, mr_upbeat_init_gfx2, 0);
 }
 
+// Game Engine Init.
 void mr_upbeat_engine_start(u32 version) {
     struct TextPrinter *textPrinter;
     
     gMrUpbeat->version = version;
     mr_upbeat_init_gfx1();
     scene_show_obj_layer();
-    func_08034f64();
-    func_08034dd0();
-    func_08034b14();
 
-    gMrUpbeat->sprite = sprite_create(gSpriteHandler, anim_mr_upbeat_beep, 0x7f, 0x78, 0x1e, 0x4864, 1, 0x7f, 0x8000);
+    mr_upbeat_init_mr_upbeat();
+    mr_upbeat_init_metronome();
+    mr_upbeat_init_score_counter();
+
+    gMrUpbeat->sprite = sprite_create(gSpriteHandler, anim_mr_upbeat_beep, 0x7f, 120, 30, 0x4864, 1, 0x7f, 0x8000);
     
-    gMrUpbeat->unk_3c = 0xFFFFFFFF;
-    func_08034e40();
-    gMrUpbeat->unk_38 = 0;
+    gMrUpbeat->fadeOutTask = 0xFFFFFFFF;
+    mr_upbeat_fade_light();
+    gMrUpbeat->gameOverScript = 0;
 
-    textPrinter = text_printer_create_new(get_current_mem_id(), 1, 0xf0, 0x1e);
+    textPrinter = text_printer_create_new(get_current_mem_id(), 1, 240, 30);
     text_printer_set_x_y(textPrinter, 0, 100);
     text_printer_set_layer(textPrinter, 0x4800);
     text_printer_center_by_content(textPrinter, TRUE);
@@ -281,89 +292,103 @@ void mr_upbeat_engine_start(u32 version) {
     gameplay_set_input_buttons(A_BUTTON, 0);
 }
 
+// Engine Event 0x06 (Stub)
 void mr_upbeat_engine_event_stub(void) {
 }
 
-void func_08035314(u32 arg0) {
-    gMrUpbeat->unk_38 = arg0;
+// Engine Event 0x01 (Set Game Over Script)
+void func_08035314(u32 script) {
+    gMrUpbeat->gameOverScript = script;
 }
 
+// Game Engine Update
 void mr_upbeat_engine_update(void) {
-    func_08034eb4();
-    func_08035168();
+    mr_upbeat_update_metronome();
+    mr_upbeat_update_stub();
 }
 
+// Game Engine Stop
 void mr_upbeat_engine_stop(void) {
 }
 
+// Cue - Spawn
 void mr_upbeat_cue_spawn(void) {
 }
 
+// Cue - Update
 u32 mr_upbeat_cue_update(struct Cue *cue, struct MrUpbeatCue *info, u32 runningTime) {
-    if (runningTime > ticks_to_frames(0x78)) {
+    if (runningTime > ticks_to_frames(120)) {
         return TRUE;   
     } else {
         return FALSE;
     }
 }
 
+// Cue - Despawn
 void mr_upbeat_cue_despawn(void) {
 }
 
-
-u32 func_08035358(void) {
-    u32 unk;
+// Check if Mr. Upbeat is tripped
+u32 is_mr_upbeat_tripped(void) {
+    u32 isHit;
     
-    if (gMrUpbeat->mrUpbeat.unk_9 == 0) {
-        unk = FALSE;
-        if (gMrUpbeat->metronome.unk_20 == FALSE) { 
-            unk = TRUE;
+    if (gMrUpbeat->mrUpbeat.side == FALSE) {
+        isHit = FALSE;
+        if (gMrUpbeat->metronome.direction == FALSE) { 
+            isHit = TRUE;
         }
     } else {
-        unk = FALSE;
-        if (gMrUpbeat->metronome.unk_20 == TRUE) { 
-            unk = TRUE;
+        isHit = FALSE;
+        if (gMrUpbeat->metronome.direction == TRUE) { 
+            isHit = TRUE;
         }
     }
 
-    return unk;
+    return isHit;
 }
 
+// Cue - Hit
 void mr_upbeat_cue_hit(struct Cue *cue, struct MrUpbeatCue *info, u32 pressed, u32 released) {
     struct Metronome *metronome = &gMrUpbeat->metronome;
     
-    func_08034ff4();
-    if (func_08035358() != FALSE) {
+    mr_upbeat_step();
+    if (is_mr_upbeat_tripped() != FALSE) {
         gameplay_ignore_this_cue_result();
         gameplay_add_cue_result_miss(0);
-        func_08035094(metronome->unk_20);
+        func_08035094(metronome->direction);
     }
 }
 
+// Cue - Barely
 void mr_upbeat_cue_barely(struct Cue *cue, struct MrUpbeatCue *info, u32 pressed, u32 released) {
     struct Metronome *metronome = &gMrUpbeat->metronome;
     
-    func_08034ff4();
-    if (func_08035358() != FALSE) {
+    mr_upbeat_step();
+    if (is_mr_upbeat_tripped() != FALSE) {
         gameplay_ignore_this_cue_result();
         gameplay_add_cue_result_miss(0);
-        func_08035094(metronome->unk_20);
+        func_08035094(metronome->direction);
     }
 }
 
+// Cue - Miss
 void mr_upbeat_cue_miss(void) {
-    func_08035094(gMrUpbeat->metronome.unk_20);
+    func_08035094(gMrUpbeat->metronome.direction);
 }
 
+// Input Event
 void mr_upbeat_input_event(void) {
-    func_08034ff4();
+    mr_upbeat_step();
 }
 
+// Common Event 0 (Beat Animation, Unimplemented)
 void mr_upbeat_common_beat_animation(void) {
 }
 
+// Common Event 1 (Display Text, Unimplemented)
 void mr_upbeat_common_display_text(void) {
 }
 
+// Common Event 2 (Init. Tutorial, Unimplemented)
 void mr_upbeat_common_init_tutorial(void) {
 }

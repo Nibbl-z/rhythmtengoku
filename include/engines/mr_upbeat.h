@@ -9,36 +9,35 @@
 // Engine Types:
 struct MrUpbeatEngineData {
     u8 version;
-    u8 pad[0x3];
     struct MrUpbeat {
         s16 sprite;
         s16 shadow;
-        u8 unk_8;
-        u8 unk_9;
-        u16 unk_10;
-        u8 unk_c;
+        u8 nextSide;
+        u8 side;
+        u16 unused;
+        u8 tripAnim;
     } mrUpbeat;
     struct Metronome {
         struct AffineSprite *sprite;
-        u32 unk_4;
-        u32 unk_8;
-        u32 unk_c;
-        u32 unk_10;
-        u32 unk_14;
-        u32 unk_18;
-        u32 unk_1c;
-        u8 unk_20;
-        u8 unk_21;
+        u32 unused;
+        u32 rotationStart;
+        u32 rotationGoal;
+        u32 rotation;
+        u32 rotationFrames;
+        u32 rotationMaxFrames;
+        u32 beepFrames;
+        u8 direction;
+        u8 stopped;
     } metronome;
     s16 sprite; // 34
-    u32 unk_38; // 38
-    s32 unk_3c; // 3c
-    s16 unk_40;
-    s16 unk_42[3];
-    s16 unk_48[3];
-    u16 unk_4e; // 4c
-    u16 unk_50; // 4e
-    u8 unk_52;
+    u32 gameOverScript; // 38
+    s32 fadeOutTask; // 3c
+    s16 scoreCounterSprite;
+    s16 scoreNumberSprites[3];
+    s16 highscoreNumberSprites[3];
+    u16 score; // 4c
+    u16 highscore; // 4e
+    u8 isHighscore;
 };
 struct MrUpbeatCue {
     /* add fields here */
@@ -66,7 +65,7 @@ extern void func_08034db0(); // Engine Event 0x04 (?)
 // extern ? func_08034e40(?);
 extern void func_08034e84(u32 unk); // Engine Event 0x02 (?)
 // extern ? func_08034eb4(?);
-extern void func_08034f18(); // Engine Event 0x00 (?)
+extern void func_08034f18(u32 ticks); // Engine Event 0x00 (?)
 // extern ? func_08034f64(?);
 // extern ? func_08034ff4(?);
 // extern ? func_08035094(?);
