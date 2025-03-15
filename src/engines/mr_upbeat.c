@@ -1,7 +1,5 @@
 #include "engines/mr_upbeat.h"
 
-asm(".include \"include/gba.inc\""); // Temporary
-
 // For readability.
 #define gMrUpbeat ((struct MrUpbeatEngineData *)gCurrentEngineData)
 
@@ -218,8 +216,44 @@ void mr_upbeat_step(void) {
     }
 }
 
-// Mr. Upbeat Trip (https://decomp.me/scratch/XJo9Q)
-#include "asm/engines/mr_upbeat/asm_08035094.s"
+// Mr. Upbeat Trip 
+void mr_upbeat_trip(u32 arg0) {
+    struct MrUpbeat *mrUpbeat = &gMrUpbeat->mrUpbeat;
+    struct Metronome *metronome = &gMrUpbeat->metronome;
+    u8 isFlipped = (mrUpbeat->side);
+
+    if (mrUpbeat->side == FALSE) {
+        if (arg0 == 0) {
+            mrUpbeat->tripAnim = 0;
+        } else {
+            mrUpbeat->tripAnim = 1;
+        }
+    } else {
+        if (arg0 == 1) {
+            mrUpbeat->tripAnim = 2;
+        } else {
+            mrUpbeat->tripAnim = 3;
+        }
+    }
+
+    sprite_set_anim(gSpriteHandler, mrUpbeat->sprite, mr_upbeat_trip_anim[mrUpbeat->tripAnim], 0, 1, 0x7f, 0);
+
+    // ?????
+    isFlipped = (mrUpbeat->side != 0) ? isFlipped : (metronome->direction != 0);
+    isFlipped = (metronome->direction != 0);
+    
+    sprite_attr_set(gSpriteHandler, mrUpbeat->shadow, isFlipped ? 0x1000 : 0);
+    sprite_set_anim_cel(gSpriteHandler, mrUpbeat->shadow, 3);
+    play_sound(&s_f_shuji_v_ouch_seqData);
+    mrUpbeat->unused = ticks_to_frames(0xc);
+    gameplay_set_input_buttons(0, 0);
+    metronome->stopped = TRUE;
+    gameplay_enable_cue_spawning(FALSE);
+
+    if (gMrUpbeat->gameOverScript) {
+        func_0801d968(gMrUpbeat->gameOverScript);
+    }
+}
 
 // Stub Update Function
 void mr_upbeat_update_stub(void) {
@@ -355,7 +389,7 @@ void mr_upbeat_cue_hit(struct Cue *cue, struct MrUpbeatCue *info, u32 pressed, u
     if (is_mr_upbeat_tripped() != FALSE) {
         gameplay_ignore_this_cue_result();
         gameplay_add_cue_result_miss(0);
-        func_08035094(metronome->direction);
+        mr_upbeat_trip(metronome->direction);
     }
 }
 
@@ -367,13 +401,13 @@ void mr_upbeat_cue_barely(struct Cue *cue, struct MrUpbeatCue *info, u32 pressed
     if (is_mr_upbeat_tripped() != FALSE) {
         gameplay_ignore_this_cue_result();
         gameplay_add_cue_result_miss(0);
-        func_08035094(metronome->direction);
+        mr_upbeat_trip(metronome->direction);
     }
 }
 
 // Cue - Miss
 void mr_upbeat_cue_miss(void) {
-    func_08035094(gMrUpbeat->metronome.direction);
+    mr_upbeat_trip(gMrUpbeat->metronome.direction);
 }
 
 // Input Event
