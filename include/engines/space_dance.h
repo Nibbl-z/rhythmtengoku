@@ -71,13 +71,24 @@ enum SpaceGrampsAnimationsEnum {
 struct SpaceDanceEngineData {
     u32 unk;
     u8 version;
-    u8 pad2[0x15];
+    u8 pad9[0x6];
+    s16 sprites[4];
+    u16 unk_14;
+    s16 unk_16;
+    u16 unk_18;
     u8 unk_1a;
     u8 unk_1b;
-    u8 pad[0x18];
+    u16 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    s8 unk_28;
+    s8 unk_29;
+    u16 unk_2a;
+    s16 unk_2c;
+    u8 pad4[0x6];
     u8 unk_34;
     u8 unk_35;
-    u8 pad3[0x2];
+    u16 unk_36;
 };
 
 struct SpaceDanceCue {
@@ -123,7 +134,7 @@ extern void space_dance_engine_stop(void); // Game Engine Stop
 extern void space_dance_cue_spawn(struct Cue *, struct SpaceDanceCue *, u32 move); // Cue - Spawn
 extern u32  space_dance_cue_update(struct Cue *, struct SpaceDanceCue *, u32 runningTime, u32 duration); // Cue - Update
 extern void space_dance_cue_despawn(struct Cue *, struct SpaceDanceCue *); // Cue - Despawn
-// extern ? func_0803d5e4(?);
+extern void func_0803d5e4(void);
 extern void space_dance_cue_hit(struct Cue *, struct SpaceDanceCue *, u32 pressed, u32 released); // Cue - Hit
 // extern ? func_0803d670(?);
 // extern ? func_0803d6c0(?);

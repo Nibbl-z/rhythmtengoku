@@ -51,13 +51,36 @@ void func_0803d408(u32 arg0) {
     gSpaceDance->unk_1b = arg0;
 }
 
-#include "asm/engines/space_dance/asm_0803d414.s"
+void func_0803d414(u32 arg0) {
+    struct Animation *anim;
+    
+    if (gSpaceDance->unk_18 == 0) {
+        gSpaceDance->unk_1c = 0;
+        anim = space_dance_get_anim(space_gramps_anim_map[arg0]);
+        sprite_set_anim(gSpriteHandler, gSpaceDance->unk_16, anim, 0, 1, 0, 0);
+    }
+}
 
-#include "asm/engines/space_dance/asm_0803d460.s"
 
-#include "asm/engines/space_dance/asm_0803d478.s"
+void func_0803d460(u32 arg0) {
+    gSpaceDance->unk_28 = arg0;
+    gSpaceDance->unk_29 = arg0 / 256;
+}
 
-#include "asm/engines/space_dance/asm_0803d4bc.s"
+// update bg scroll maybe?
+void func_0803d478(void) {
+    gSpaceDance->unk_20 += gSpaceDance->unk_28;
+    gSpaceDance->unk_24 += gSpaceDance->unk_29;
+
+    D_03004b10.BG_OFS[1].x = gSpaceDance->unk_20 >> 2;
+    D_03004b10.BG_OFS[1].y = gSpaceDance->unk_24 >> 2;
+    D_03004b10.BG_OFS[2].x = gSpaceDance->unk_20 >> 2;
+    D_03004b10.BG_OFS[2].y = gSpaceDance->unk_24 >> 2;
+} 
+
+void func_0803d4bc(u32 arg0) {
+    sprite_set_anim_cel(gSpriteHandler, gSpaceDance->unk_2c, arg0);
+}
 
 void func_0803d4e0(void) {
     gSpaceDance->unk_34 = TRUE;
@@ -69,7 +92,15 @@ void func_0803d588(u32 arg0) {
     gSpaceDance->unk_35 = arg0;
 }
 
-#include "asm/engines/space_dance/asm_0803d598.s"
+void space_dance_engine_update(void) {
+    func_0803d388();
+    func_0803d478();
+    func_0803d4f0();
+
+    if (gSpaceDance->unk_36 != 0) {
+        gSpaceDance->unk_36--;
+    }
+}
 
 void space_dance_engine_stop(void) {
 
@@ -79,18 +110,50 @@ void space_dance_cue_spawn(struct Cue *cue, struct SpaceDanceCue *info, u32 move
     info->pose = move;
 }
 
-#include "asm/engines/space_dance/asm_0803d5c4.s"
+u32 space_dance_cue_update(struct Cue *cue, struct SpaceDanceCue *info, u32 runningTime, u32 duration) {
+    if (runningTime > ticks_to_frames(0x30) ) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
 
 void space_dance_cue_despawn(struct Cue *cue, struct SpaceDanceCue *info) {
 }
 
-#include "asm/engines/space_dance/asm_0803d5e4.s"
+void func_0803d5e4(void) {
+    gameplay_set_input_buttons(A_BUTTON | DPAD_DOWN | DPAD_RIGHT, 0);
+}
 
-#include "asm/engines/space_dance/asm_0803d5f4.s"
+void space_dance_cue_hit(struct Cue *cue, struct SpaceDanceCue *info, u32 pressed, u32 released) {
+    s16 sprite = gSpaceDance->sprites[0];
+    struct Animation *anim = space_dance_get_anim(space_dance_cue_anim_map[info->pose]);
+    
+    sprite_set_anim(gSpriteHandler, sprite, anim, 0, 1, 0x7f, 0);
+    
+    gSpaceDance->unk_14 = ticks_to_frames(0x14);
+    
+    gameplay_set_input_buttons(0, 0);
 
-#include "asm/engines/space_dance/asm_0803d670.s"
+    schedule_function_call(get_current_mem_id(), func_0803d5e4, 0, ticks_to_frames(0x14));
+}
 
-#include "asm/engines/space_dance/asm_0803d6c0.s"
+void func_0803d670(u32 arg0) {
+    struct Animation *anim;
+    
+    if (gSpaceDance->unk_1c == 0) {
+        anim = space_dance_get_anim(0x1c);
+        sprite_set_anim(gSpriteHandler, gSpaceDance->unk_16, anim, arg0, 1, 0x7f, 0);
+        gSpaceDance->unk_1c = ticks_to_frames(0x24);
+    }
+}
+
+void func_0803d6c0(u32 arg0) {
+    struct Animation *anim = space_dance_get_anim(0x1b);
+    sprite_set_anim(gSpriteHandler, gSpaceDance->unk_16, anim, arg0, 1, 0x7f, 0);
+
+    gSpaceDance->unk_1c = ticks_to_frames(0x24);
+}
 
 void space_dance_cue_barely(struct Cue *cue, struct SpaceDanceCue *info, u32 pressed, u32 released) {
     space_dance_cue_hit(cue, info, pressed, released);
@@ -99,7 +162,9 @@ void space_dance_cue_barely(struct Cue *cue, struct SpaceDanceCue *info, u32 pre
 
 #include "asm/engines/space_dance/asm_0803d71c.s"
 
-#include "asm/engines/space_dance/asm_0803d82c.s"
+void func_0803d82c(void) {
+    gameplay_set_input_buttons(A_BUTTON | DPAD_DOWN | DPAD_RIGHT, 0);
+}
 
 #include "asm/engines/space_dance/asm_0803d83c.s"
 
