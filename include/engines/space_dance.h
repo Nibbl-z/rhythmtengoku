@@ -69,11 +69,19 @@ enum SpaceGrampsAnimationsEnum {
 
 // Engine Types:
 struct SpaceDanceEngineData {
-    u8 pad[0x38];
+    u32 unk;
+    u8 version;
+    u8 pad2[0x15];
+    u8 unk_1a;
+    u8 unk_1b;
+    u8 pad[0x18];
+    u8 unk_34;
+    u8 unk_35;
+    u8 pad3[0x2];
 };
 
 struct SpaceDanceCue {
-    /* add fields here */
+    u32 pose;
 };
 
 
