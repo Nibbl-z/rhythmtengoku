@@ -66,26 +66,27 @@ enum SpaceGrampsAnimationsEnum {
     SPACE_GRAMPS_ANIM_BLINK
 };
 
-
 // Engine Types:
 struct SpaceDanceEngineData {
     u32 unk;
     u8 version;
-    u8 pad9[0x6];
-    s16 sprites[4];
-    u16 unk_14;
+    s16 dancers[4];
+    u16 unk_e[4];
     s16 unk_16;
     u16 unk_18;
     u8 unk_1a;
     u8 unk_1b;
     u16 unk_1c;
+    s16 unk_1e;
     s32 unk_20;
     s32 unk_24;
     s8 unk_28;
     s8 unk_29;
     u16 unk_2a;
     s16 unk_2c;
-    u8 pad4[0x6];
+    s16 unk_2e;
+    s16 unk_30;
+    s16 unk_32;
     u8 unk_34;
     u8 unk_35;
     u16 unk_36;
