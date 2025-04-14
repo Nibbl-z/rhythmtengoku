@@ -15,7 +15,17 @@ enum DrumLiveMenuPostersEnum {
 
 // Engine Types:
 struct DrumLiveMenuEngineData {
-    u8 pad[0x1c];
+    u8 version;
+    struct TextPrinter *printer;
+    u8 unk8;
+    u8 unk9;
+    u16 unka;
+    s32 unkc;
+    u32 unk10;
+    u16 unk14;
+    s16 unk16;
+    s16 unk18;
+    s16 unk1a;
 };
 
 struct DrumLiveMenuCue {
