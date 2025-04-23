@@ -49,11 +49,31 @@ enum MarchingOrdersSoundEffectsEnum {
 
 // Engine Types:
 struct MarchingOrdersEngineData {
-    u8 pad[0x48];
+    u8 version;
+    struct BitmapFontOBJ *font;
+    struct Marcher {
+        s16 sprite;
+        s16 unk3;
+        u8 unk4;
+        u16 unk5;
+        u8 unk6;
+        u16 unk2;
+    } marchers[4];
+    // 0x38
+    //u8 unk_2c;
+    u8 unk_38;
+    u16 unk_3a;
+    s16 unk_3c;
+    u16 unk_3e;
+    s16 unk_40;
+    s16 unk_42;
+    u8 unk_44;
+    u8 unk_45;
+    u8 pad2[0x2];
 };
 
 struct MarchingOrdersCue {
-    /* add fields here */
+    u8 command;
 };
 
 struct MarchingSfxData {
@@ -76,7 +96,7 @@ extern struct MarchingSfxData marching_sfx_table[][12];
 
 
 // Functions:
-extern struct Animation *func_08034100(u32 anim); // Get Animation
+extern struct Animation *func_08034100(s32 anim); // Get Animation
 extern void marching_init_gfx3(void); // Graphics Init. 3
 extern void marching_init_gfx2(void); // Graphics Init. 2
 extern void marching_init_gfx1(void); // Graphics Init. 1
@@ -90,7 +110,7 @@ extern void func_080346e0(); // Engine Event 01 (?)
 extern void func_080347c0(); // Engine Event 02 (?)
 extern void func_0803481c(); // Engine Event 03 (?)
 // extern ? func_0803482c(?);
-extern void func_08034850(); // Engine Event 04 (?)
+extern void func_08034850(u8 arg0); // Engine Event 04 (?)
 extern void marching_engine_update(void); // Game Engine Update
 extern void marching_engine_stop(void); // Game Engine Close
 extern void marching_cue_spawn(struct Cue *, struct MarchingOrdersCue *, u32 command); // Cue - Spawn
