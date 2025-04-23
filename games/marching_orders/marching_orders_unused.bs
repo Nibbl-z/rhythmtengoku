@@ -190,7 +190,7 @@ script script_marching_orders_unused_main
     print_text_f D_0805c818
     set_marking_criteria 0
     call marching_orders_sub_08a8386c
-    marching_orders_event03
+    marching_orders_enable_conveyor
     set_marking_criteria 0
     call marching_orders_sub_08a8386c
     set_marking_criteria 0

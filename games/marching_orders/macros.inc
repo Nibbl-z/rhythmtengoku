@@ -87,7 +87,7 @@
 
 
 @ [Event 0x03] ?
-.macro marching_orders_event03
+.macro marching_orders_enable_conveyor
     marching_orders_event EVENT_03, 0
 .endm
 
