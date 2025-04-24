@@ -107,7 +107,7 @@ void marching_play_action(u32 action) {
     u32 marcherCount = 3;
 
     // Because beatscript events can only pass in one argument,
-    // the 9th bit of the action is used to determine
+    // the 8th bit of the action is used to determine
     // if the action should play on the player's marcher as well.
 
     if (action & 0x100) {
