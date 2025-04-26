@@ -104,6 +104,8 @@ struct NightWalkEngineData {
         s16 balloonSprites[30];
         u16 zapTime;
         s16 fishSprite;
+        u8 rollFrame;
+        u8 rollTimer;
     } playYan;
     struct NightWalkUnk3B8 {
         u32 unk0_b0:1;

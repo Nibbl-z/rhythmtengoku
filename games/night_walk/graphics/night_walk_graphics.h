@@ -53,6 +53,7 @@ extern struct Animation anim_play_yan_violent_electrocution[];
 /* NIGHT WALK - COMPRESSED GRAPHICS */
 
 extern struct CompressedGraphics D_08c52420;
+extern const u8 night_walk_bin;
 extern struct CompressedGraphics D_08c524fc;
 
 /* NIGHT WALK - PALETTES */

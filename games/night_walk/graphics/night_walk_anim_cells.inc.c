@@ -1,17 +1,15 @@
 // do not rename these
 
 // [D_088c89c0]
-AnimationCel night_walk_cel000[] = {
-    /* Len */ 2,
-    /* 000 */ 0x00e8, 0x41f8, 0x20d4,
-    /* 001 */ 0x40f8, 0x01f8, 0x2148
+AnimationCel night_walk_roll1[] = {
+    /* Len */ 1,
+    /* 000 */ 0x00f8, 0x01fc, 0x2178,
 };
 
 // [D_088c89ce]
-AnimationCel night_walk_cel001[] = {
-    /* Len */ 2,
-    /* 000 */ 0x00e8, 0x41f8, 0x20d8,
-    /* 001 */ 0x40f8, 0x01f8, 0x214c
+AnimationCel night_walk_roll2[] = {
+    /* Len */ 1,
+    /* 000 */ 0x00f8, 0x01fc, 0x2179,
 };
 
 // [D_088c89dc]
@@ -43,10 +41,16 @@ AnimationCel night_walk_cel005[] = {
 };
 
 // [D_088c8a14]
-AnimationCel night_walk_cel006[] = {
-    /* Len */ 2,
-    /* 000 */ 0x40f8, 0x01f4, 0x2154,
-    /* 001 */ 0x00f8, 0x0004, 0x2163
+AnimationCel night_walk_roll0[] = {
+    /* Len */ 1,
+    /* 000 */ 0x00f8, 0x01fc, 0x2177,
+    /* 001  0x00f8, 0x0004, 0x2163*/
+};
+
+AnimationCel night_walk_roll3[] = {
+    /* Len */ 1,
+    /* 000 */ 0x00f8, 0x01fc, 0x217a,
+    /* 001  0x00f8, 0x0004, 0x2163*/
 };
 
 // [D_088c8a22]

@@ -5,12 +5,12 @@
 
 // [D_088c9a60] Play-Yan Blink
 struct Animation anim_play_yan_blink[] = {
-    /* 000 */ { night_walk_cel000, 90 },
-    /* 001 */ { night_walk_cel001, 10 },
-    /* 002 */ { night_walk_cel000, 30 },
-    /* 003 */ { night_walk_cel001, 6 },
-    /* 004 */ { night_walk_cel000, 6 },
-    /* 005 */ { night_walk_cel001, 6 },
+    /* 000 */ { night_walk_roll0, 90 },
+    /* 001 */ { night_walk_roll0, 10 },
+    /* 002 */ { night_walk_roll0, 30 },
+    /* 003 */ { night_walk_roll0, 6 },
+    /* 004 */ { night_walk_roll0, 6 },
+    /* 005 */ { night_walk_roll0, 6 },
     /* End */ END_ANIMATION
 };
 
@@ -22,7 +22,10 @@ struct Animation anim_play_yan_jump[] = {
 
 // [D_088c9aa8] Play-Yan Crawl
 struct Animation anim_play_yan_crawl[] = {
-    /* 000 */ { night_walk_cel006, 4 },
+    /* 000 */ { night_walk_roll0, 4 },
+    /* 000 */ { night_walk_roll1, 4 },
+    /* 000 */ { night_walk_roll2, 4 },
+    /* 000 */ { night_walk_roll3, 4 },
     /* End */ END_ANIMATION
 };
 

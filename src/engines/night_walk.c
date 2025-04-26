@@ -49,7 +49,7 @@ static s32 D_0300156c; // Unused, Unknown Location
 // Init. Play-Yan
 void night_walk_init_play_yan(void) {
     struct PlayYan *playYan = &gNightWalk->playYan;
-
+    
     playYan->sprite = sprite_create(gSpriteHandler, anim_play_yan_walk, 0, 64, 120, 0x4800, 1, 0, 0);
     playYan->state = PLAY_YAN_STATE_WALKING;
     playYan->zapTime = 0;
@@ -94,8 +94,8 @@ void night_walk_play_yan_end_roll(s32 jumpOverGap, s32 timingOffset) {
 
 void night_walk_play_yan_roll() {
     struct PlayYan *playYan = &gNightWalk->playYan;
-
-    sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_crawl, 0, 0, 0, 0);
+    
+    sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_crawl, 0, 1, 0, 0);
     playYan->state = PLAY_YAN_STATE_ROLLING;
     playYan->jumpTime = 0;
 }
@@ -171,7 +171,7 @@ void night_walk_play_yan_update_jump(struct PlayYan *playYan) {
 
 void night_walk_play_yan_update_roll(struct PlayYan *playYan) {
     playYan->jumpTime++;
-
+    
     if (playYan->jumpTime >= 0x14) {
         sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_walk, 0, 1, 0, 0);
         playYan->state = PLAY_YAN_STATE_WALKING;
