@@ -5,12 +5,7 @@
 
 // [D_088c9a60] Play-Yan Blink
 struct Animation anim_play_yan_blink[] = {
-    /* 000 */ { night_walk_cel000, 90 },
-    /* 001 */ { night_walk_cel001, 10 },
-    /* 002 */ { night_walk_cel000, 30 },
-    /* 003 */ { night_walk_cel001, 6 },
-    /* 004 */ { night_walk_cel000, 6 },
-    /* 005 */ { night_walk_cel001, 6 },
+    /* 000 */ { night_walk_cel000, 4 },
     /* End */ END_ANIMATION
 };
 

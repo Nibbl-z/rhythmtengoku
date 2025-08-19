@@ -19,7 +19,8 @@ enum PlayYanStatesEnum {
     PLAY_YAN_STATE_HANGING_ON,
     PLAY_YAN_STATE_FALLING,
     PLAY_YAN_STATE_STAR_WAND,
-    PLAY_YAN_STATE_ZAPPED
+    PLAY_YAN_STATE_ZAPPED,
+    PLAY_YAN_STATE_ENCOUNTER
 };
 
 enum BridgeTypesEnum {
@@ -115,11 +116,11 @@ void night_walk_play_yan_update_jump(struct PlayYan *playYan) {
         playYan->zapTime--;
         if (playYan->zapTime == 0) {
             gNightWalk->stoppedScrolling = TRUE;
-            if (gNightWalk->endScript != NULL) {
-                func_0801d95c(gNightWalk->endScript);
-            }
+            //if (gNightWalk->endScript != NULL) {
+                //func_0801d95c(gNightWalk->endScript);
+            //}
             gameplay_add_cue_result(gNightWalk->markingCriteria, 2, 0);
-            sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_violent_electrocution, 0, 1, 0, 0);
+            //sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_violent_electrocution, 0, 1, 0, 0);
             sprite_set_anim(gSpriteHandler, playYan->fishSprite, anim_night_walk_fish_zap, 0, 1, 0, 0);
             playYan->zapTime = ticks_to_frames(0x48);
             playYan->state = PLAY_YAN_STATE_ZAPPED;
@@ -151,10 +152,13 @@ void night_walk_play_yan_hold_on(s16 x, s16 y) {
 void night_walk_play_yan_fall(void) {
     struct PlayYan *playYan = &gNightWalk->playYan;
 
-    playYan->state = PLAY_YAN_STATE_FALLING;
-    playYan->yOrigin = sprite_get_data(gSpriteHandler, playYan->sprite, 5);
-    playYan->yDistance = 0;
-    playYan->yVelocity = 0;
+    playYan->state = PLAY_YAN_STATE_ENCOUNTER;
+    //playYan->yOrigin = sprite_get_data(gSpriteHandler, playYan->sprite, 5);
+    //playYan->yDistance = 0;
+    //playYan->yVelocity = 0;
+    sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_blink, 0, 1, 1, 0);
+    
+
     play_sound(&s_f_drumtech_fall_seqData);
 }
 
@@ -166,6 +170,17 @@ void night_walk_play_yan_update_fall(struct PlayYan *playYan) {
     playYan->yVelocity += 28;
     playYan->yDistance += playYan->yVelocity;
     sprite_set_y(gSpriteHandler, playYan->sprite, FIXED_TO_INT(playYan->yDistance) + playYan->yOrigin);
+}
+
+void night_walk_play_yan_update_encounter(struct PlayYan *playYan) {
+    
+    if (sprite_get_x(gSpriteHandler, playYan->sprite) > 40) {
+        sprite_set_x(gSpriteHandler, playYan->sprite, sprite_get_x(gSpriteHandler, playYan->sprite) - 3);
+    }
+
+    if (sprite_get_x(gSpriteHandler, playYan->fishSprite) < 180) {
+        sprite_set_x(gSpriteHandler, playYan->fishSprite, sprite_get_x(gSpriteHandler, playYan->fishSprite) + 5);
+    }
 }
 
 
@@ -193,7 +208,7 @@ void night_walk_play_yan_update_zap_fall(struct PlayYan *playYan) {
     playYan->zapTime--;
     if (playYan->zapTime > 0) return;
 
-    sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_violent_electrocution, 1, 0, 0, 0);
+    //sprite_set_anim(gSpriteHandler, playYan->sprite, anim_play_yan_violent_electrocution, 1, 0, 0, 0);
     sprite_set_anim(gSpriteHandler, playYan->fishSprite, anim_night_walk_fish, 0, 1, 0, 0);
     night_walk_play_yan_fall();
 }
@@ -258,6 +273,10 @@ void night_walk_update_play_yan(void) {
         case PLAY_YAN_STATE_ZAPPED:
             night_walk_play_yan_update_zap_fall(playYan);
             break;
+        case PLAY_YAN_STATE_ENCOUNTER:
+            night_walk_play_yan_update_encounter(playYan);
+            break;
+
     }
 }
 
