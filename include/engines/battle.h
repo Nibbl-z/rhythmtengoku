@@ -14,6 +14,8 @@ struct BattleEngineData {
     struct Enemy {
         s16 sprite;
     } enemy;
+    s16 buttonSprites[5];
+    u8 selectedAction;
     u8 bgScrollTimer;
     struct TextPrinter *textPrinter;
 };

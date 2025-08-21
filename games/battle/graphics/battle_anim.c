@@ -1,15 +1,14 @@
+// Exported by Yanimator
 #include "global.h"
 #include "graphics.h"
 
 #include "battle_anim_cells.inc.c"
 
-// [D_088c9a60] Play-Yan Blink
 struct Animation anim_play_yan_stand[] = {
     /* 000 */ { battle_cel000, 4 },
     /* End */ END_ANIMATION
 };
 
-// [D_088c9b08] Electric Fish Idle
 struct Animation anim_battle_fish[] = {
     /* 000 */ { battle_cel021, 4 },
     /* 001 */ { battle_cel022, 4 },
@@ -19,3 +18,14 @@ struct Animation anim_battle_fish[] = {
     /* 005 */ { battle_cel026, 4 },
     /* End */ END_ANIMATION
 };
+
+struct Animation anim_fight_btn[] = {
+    /* 000 */ { battle_cel_fight_btn, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_fight_btn_selected[] = {
+    /* 000 */ { battle_cel_fight_btn_selected, 4 },
+    /* End */ END_ANIMATION
+};
+

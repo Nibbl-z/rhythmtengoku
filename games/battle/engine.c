@@ -16,6 +16,11 @@ struct GraphicsTable battle_gfx_table[] = {
         /* Dest. */ BG_MAP_BASE(0xE800),
         /* Size  */ COMPRESSED_GFX_SOURCE
     },
+    /* BG Map */ {
+        /* Src.  */ &battle_overlay,
+        /* Dest. */ BG_MAP_BASE(0xF000),
+        /* Size  */ COMPRESSED_GFX_SOURCE
+    },
     /* OBJ Tileset */ {
         /* Src.  */ &battle_obj,
         /* Dest. */ OBJ_TILESET_BASE(0),

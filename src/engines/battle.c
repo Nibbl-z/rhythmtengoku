@@ -4,6 +4,14 @@
 // For readability.
 #define gBattle ((struct BattleEngineData *)gCurrentEngineData)
 
+enum ActionSelectionEnum {
+    ACTION_FIGHT,
+    ACTION_ACT,
+    ACTION_ITEM,
+    ACTION_SPARE,
+    ACTION_DEFEND
+};
+
 // Graphics Init. 3
 void battle_init_gfx3(void) {
     func_0800c604(0);
@@ -34,7 +42,8 @@ void battle_engine_start(u32 version) {
 
     gBattle->version = version;
     battle_init_gfx1();
-    scene_set_bg_layer_display(BG_LAYER_1, TRUE, 0, 0, 0, 29, 1);
+    scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 29, 1);
+    scene_set_bg_layer_display(BG_LAYER_1, TRUE, 0, 0, 0, 30, 1);
     battler = &gBattle->battler; 
     battler->sprite = sprite_create(gSpriteHandler, anim_play_yan_stand, 0, 40, 90, 0x4800, 1, 0, 0);
 
@@ -42,10 +51,16 @@ void battle_engine_start(u32 version) {
     enemy->sprite = sprite_create(gSpriteHandler, anim_battle_fish, 0, 182, 120, 0x4800, 1, 0, 0);
 
     gBattle->textPrinter = text_printer_create_new(get_current_mem_id(), 4, 200, 30);
-    text_printer_set_x_y(gBattle->textPrinter, 10, 120);
-    text_printer_set_colors(gBattle->textPrinter, 3);
+    text_printer_set_x_y(gBattle->textPrinter, 10, 140);
+    text_printer_set_colors(gBattle->textPrinter, 1);
     text_printer_set_string(gBattle->textPrinter, "* Biribiriuo blocks the way!");
     text_printer_set_layer(gBattle->textPrinter, 0x4f00);
+
+    gBattle->buttonSprites[0] = sprite_create(gSpriteHandler, anim_fight_btn_selected, 0, 73, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[1] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 89, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[2] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 105, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[3] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 121, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[4] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 137, 111, 0x4801, 1, 0, 0); 
 }
 
 // Game Engine Update
@@ -54,11 +69,26 @@ void battle_engine_update(void) {
 
     if (gBattle->bgScrollTimer == 20) {
         gBattle->bgScrollTimer = 0;
-        D_03004b10.BG_OFS[1].x += 1;
-        D_03004b10.BG_OFS[1].y += 1;
+        D_03004b10.BG_OFS[2].x += 1;
+        D_03004b10.BG_OFS[2].y += 1;
     }
 
     text_printer_update(gBattle->textPrinter);
+
+    // Action Selection
+
+    if (D_03004afc & DPAD_RIGHT && gBattle->selectedAction < ACTION_DEFEND) {
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], anim_fight_btn, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction + 1], anim_fight_btn_selected, 0, 0, 0, 0);
+        gBattle->selectedAction++;
+    }
+
+    if (D_03004afc & DPAD_LEFT && gBattle->selectedAction > ACTION_FIGHT) {
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], anim_fight_btn, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction - 1], anim_fight_btn_selected, 0, 0, 0, 0);
+
+        gBattle->selectedAction--;
+    }
 }
 
 // Game Engine Stop
@@ -67,4 +97,5 @@ void battle_engine_stop(void) {
 
 // Input Event
 void battle_input_event(u32 pressed, u32 released) {
+    
 }
