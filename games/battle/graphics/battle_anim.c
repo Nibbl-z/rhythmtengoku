@@ -29,3 +29,42 @@ struct Animation anim_fight_btn_selected[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_act_btn[] = {
+    /* 000 */ { battle_cel_act_btn, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_act_btn_selected[] = {
+    /* 000 */ { battle_cel_act_btn_selected, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_item_btn[] = {
+    /* 000 */ { battle_cel_item_btn, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_item_btn_selected[] = {
+    /* 000 */ { battle_cel_item_btn_selected, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_spare_btn[] = {
+    /* 000 */ { battle_cel_spare_btn, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_spare_btn_selected[] = {
+    /* 000 */ { battle_cel_spare_btn_selected, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_defend_btn[] = {
+    /* 000 */ { battle_cel_defend_btn, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_defend_btn_selected[] = {
+    /* 000 */ { battle_cel_defend_btn_selected, 4 },
+    /* End */ END_ANIMATION
+};

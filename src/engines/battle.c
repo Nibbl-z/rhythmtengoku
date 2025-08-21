@@ -12,6 +12,10 @@ enum ActionSelectionEnum {
     ACTION_DEFEND
 };
 
+struct Animation *get_battle_btn_animations(u32 selection, u32 isSelected) {
+    return battle_btn_animations[selection][isSelected];
+}
+
 // Graphics Init. 3
 void battle_init_gfx3(void) {
     func_0800c604(0);
@@ -56,11 +60,11 @@ void battle_engine_start(u32 version) {
     text_printer_set_string(gBattle->textPrinter, "* Biribiriuo blocks the way!");
     text_printer_set_layer(gBattle->textPrinter, 0x4f00);
 
-    gBattle->buttonSprites[0] = sprite_create(gSpriteHandler, anim_fight_btn_selected, 0, 73, 111, 0x4801, 1, 0, 0);
-    gBattle->buttonSprites[1] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 89, 111, 0x4801, 1, 0, 0);
-    gBattle->buttonSprites[2] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 105, 111, 0x4801, 1, 0, 0);
-    gBattle->buttonSprites[3] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 121, 111, 0x4801, 1, 0, 0);
-    gBattle->buttonSprites[4] = sprite_create(gSpriteHandler, anim_fight_btn, 0, 137, 111, 0x4801, 1, 0, 0); 
+    gBattle->buttonSprites[0] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_FIGHT, TRUE), 0, 73, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[1] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_ACT, FALSE), 0, 89, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[2] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_ITEM, FALSE), 0, 105, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[3] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_SPARE, FALSE), 0, 121, 111, 0x4801, 1, 0, 0);
+    gBattle->buttonSprites[4] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_DEFEND, FALSE), 0, 137, 111, 0x4801, 1, 0, 0); 
 }
 
 // Game Engine Update
@@ -78,16 +82,25 @@ void battle_engine_update(void) {
     // Action Selection
 
     if (D_03004afc & DPAD_RIGHT && gBattle->selectedAction < ACTION_DEFEND) {
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], anim_fight_btn, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction + 1], anim_fight_btn_selected, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], get_battle_btn_animations(gBattle->selectedAction, FALSE), 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction + 1], get_battle_btn_animations(gBattle->selectedAction + 1, TRUE), 0, 0, 0, 0);
+        
         gBattle->selectedAction++;
+
+        play_sound(&s_menu_cursor1_seqData);
     }
 
     if (D_03004afc & DPAD_LEFT && gBattle->selectedAction > ACTION_FIGHT) {
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], anim_fight_btn, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction - 1], anim_fight_btn_selected, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], get_battle_btn_animations(gBattle->selectedAction, FALSE), 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction - 1], get_battle_btn_animations(gBattle->selectedAction - 1, TRUE), 0, 0, 0, 0);
 
         gBattle->selectedAction--;
+
+        play_sound(&s_menu_cursor1_seqData);
+    }
+
+    if (D_03004afc & A_BUTTON) {
+        play_sound(&s_menu_kettei2_seqData);
     }
 }
 

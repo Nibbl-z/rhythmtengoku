@@ -22,6 +22,7 @@ struct BattleEngineData {
 
 extern struct CompressedData *battle_buffered_textures[];
 extern struct GraphicsTable battle_gfx_table[];
+extern struct Animation *battle_btn_animations[5][2];
 
 extern void battle_init_gfx3(void);
 extern void battle_init_gfx2(void);

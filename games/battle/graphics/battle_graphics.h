@@ -10,6 +10,19 @@ extern struct Animation anim_battle_fish[];
 extern struct Animation anim_fight_btn[];
 extern struct Animation anim_fight_btn_selected[];
 
+extern struct Animation anim_act_btn[];
+extern struct Animation anim_act_btn_selected[];
+
+extern struct Animation anim_item_btn[];
+extern struct Animation anim_item_btn_selected[];
+
+extern struct Animation anim_spare_btn[];
+extern struct Animation anim_spare_btn_selected[];
+
+extern struct Animation anim_defend_btn[];
+extern struct Animation anim_defend_btn_selected[];
+
+
 
 /* BATTLE - COMPRESSED GRAPHICS */
 

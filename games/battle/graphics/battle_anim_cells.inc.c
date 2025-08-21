@@ -57,3 +57,43 @@ AnimationCel battle_cel_fight_btn_selected[] = {
     /* Len */ 1,
     /* 000 */ 0x0000, 0x4000, 0x1098
 };
+
+AnimationCel battle_cel_act_btn[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x009a
+};
+
+AnimationCel battle_cel_act_btn_selected[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x109a
+};
+
+AnimationCel battle_cel_item_btn[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x009e
+};
+
+AnimationCel battle_cel_item_btn_selected[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x109e
+};
+
+AnimationCel battle_cel_spare_btn[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x0090
+};
+
+AnimationCel battle_cel_spare_btn_selected[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x1090
+};
+
+AnimationCel battle_cel_defend_btn[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x0092
+};
+
+AnimationCel battle_cel_defend_btn_selected[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x4000, 0x1092
+};

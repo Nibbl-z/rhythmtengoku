@@ -1,5 +1,13 @@
 #include "engines/battle.h"
 
+struct Animation *battle_btn_animations[][2] = {
+    { anim_fight_btn, anim_fight_btn_selected },
+    { anim_act_btn, anim_act_btn_selected },
+    { anim_item_btn, anim_item_btn_selected },
+    { anim_spare_btn, anim_spare_btn_selected },
+    { anim_defend_btn, anim_defend_btn_selected }
+};
+
 struct CompressedData *battle_buffered_textures[] = {
     END_OF_BUFFERED_TEXTURES_LIST
 };
