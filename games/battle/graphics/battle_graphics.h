@@ -22,6 +22,14 @@ extern struct Animation anim_spare_btn_selected[];
 extern struct Animation anim_defend_btn[];
 extern struct Animation anim_defend_btn_selected[];
 
+extern struct Animation anim_soul[];
+
+extern struct Animation anim_fight_indicator[];
+extern struct Animation anim_fight_timing[];
+extern struct Animation anim_miss[];
+extern struct Animation anim_75[];
+extern struct Animation anim_50[];
+extern struct Animation anim_25[];
 
 
 /* BATTLE - COMPRESSED GRAPHICS */

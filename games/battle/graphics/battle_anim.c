@@ -68,3 +68,71 @@ struct Animation anim_defend_btn_selected[] = {
     /* 000 */ { battle_cel_defend_btn_selected, 4 },
     /* End */ END_ANIMATION
 };
+
+struct Animation anim_soul[] = {
+    /* 000 */ { battle_cel_soul, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_fight_indicator[] = {
+    /* 000 */ { battle_fight_indicator, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_fight_timing[] = {
+    /* 000 */ { battle_fight_timing, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_miss[] = {
+    /* 000 */ { miss_000, 2 },
+    /* 001 */ { miss_001, 2 },
+    /* 002 */ { miss_002, 2 },
+    /* 003 */ { miss_003, 3 },
+    /* 004 */ { miss_004, 3 },
+    /* 005 */ { miss_005, 2 },
+    /* 006 */ { miss_007, 2 },
+    /* 007 */ { miss_006, 3 },
+    /* 008 */ { miss_007, 40 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_75[] = {
+    /* 000 */ { crit_000, 2 },
+    /* 001 */ { crit_001, 2 },
+    /* 002 */ { crit_002, 2 },
+    /* 003 */ { crit_003, 3 },
+    /* 004 */ { crit_004, 3 },
+    /* 005 */ { crit_005, 2 },
+    /* 006 */ { crit_007, 2 },
+    /* 007 */ { crit_006, 3 },
+    /* 008 */ { crit_007, 40 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_50[] = {
+    /* 000 */ { attack50_000, 2 },
+    /* 001 */ { attack50_001, 2 },
+    /* 002 */ { attack50_002, 2 },
+    /* 003 */ { attack50_003, 3 },
+    /* 004 */ { attack50_004, 3 },
+    /* 005 */ { attack50_005, 2 },
+    /* 006 */ { attack50_007, 2 },
+    /* 007 */ { attack50_006, 3 },
+    /* 008 */ { attack50_007, 40 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_25[] = {
+    /* 000 */ { attack25_000, 2 },
+    /* 001 */ { attack25_001, 2 },
+    /* 002 */ { attack25_002, 2 },
+    /* 003 */ { attack25_003, 3 },
+    /* 004 */ { attack25_004, 3 },
+    /* 005 */ { attack25_005, 2 },
+    /* 006 */ { attack25_007, 2 },
+    /* 007 */ { attack25_006, 3 },
+    /* 008 */ { attack25_007, 40 },
+    /* End */ END_ANIMATION
+};
+

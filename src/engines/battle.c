@@ -9,7 +9,14 @@ enum ActionSelectionEnum {
     ACTION_ACT,
     ACTION_ITEM,
     ACTION_SPARE,
-    ACTION_DEFEND
+    ACTION_DEFEND,
+    ACTION_NONE
+};
+
+enum BattleStateEnum {
+    STATE_CHOOSING,
+    STATE_DIALOGUE,
+    STATE_BATTLEBOX
 };
 
 struct Animation *get_battle_btn_animations(u32 selection, u32 isSelected) {
@@ -48,11 +55,16 @@ void battle_engine_start(u32 version) {
     battle_init_gfx1();
     scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 29, 1);
     scene_set_bg_layer_display(BG_LAYER_1, TRUE, 0, 0, 0, 30, 1);
+
+    gBattle->selectedAction = ACTION_NONE;
+
     battler = &gBattle->battler; 
     battler->sprite = sprite_create(gSpriteHandler, anim_play_yan_stand, 0, 40, 90, 0x4800, 1, 0, 0);
+    battler->health = 100;
 
     enemy = &gBattle->enemy;
     enemy->sprite = sprite_create(gSpriteHandler, anim_battle_fish, 0, 182, 120, 0x4800, 1, 0, 0);
+    enemy->health = 250;
 
     gBattle->textPrinter = text_printer_create_new(get_current_mem_id(), 4, 200, 30);
     text_printer_set_x_y(gBattle->textPrinter, 10, 140);
@@ -65,6 +77,150 @@ void battle_engine_start(u32 version) {
     gBattle->buttonSprites[2] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_ITEM, FALSE), 0, 105, 111, 0x4801, 1, 0, 0);
     gBattle->buttonSprites[3] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_SPARE, FALSE), 0, 121, 111, 0x4801, 1, 0, 0);
     gBattle->buttonSprites[4] = sprite_create(gSpriteHandler, get_battle_btn_animations(ACTION_DEFEND, FALSE), 0, 137, 111, 0x4801, 1, 0, 0); 
+
+    gBattle->menuSoulSprite = sprite_create(gSpriteHandler, anim_soul, 0, 5, 136, 0x4802, 1, 0, 0);
+    sprite_set_visible(gSpriteHandler, gBattle->menuSoulSprite, FALSE);
+
+    gBattle->fightIndicator = sprite_create(gSpriteHandler, anim_fight_indicator, 0, 16, 128, 0x4805, 1, 0, 0);
+    sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, FALSE);
+
+    gBattle->fightTiming = sprite_create(gSpriteHandler, anim_fight_timing, 0, 100, 129, 0x4700, 1, 0, 0);
+    sprite_set_visible(gSpriteHandler, gBattle->fightTiming, FALSE);
+
+    gBattle->enemyDamageSprite = sprite_create(gSpriteHandler, anim_miss, 0, 210, 72, 0x4810, 0, 0, 0);
+    sprite_set_visible(gSpriteHandler, gBattle->enemyDamageSprite, FALSE);
+}
+
+void battle_fight_select(void) {
+    gBattle->selectedAction = ACTION_FIGHT;
+    text_printer_set_string(gBattle->textPrinter, " Biribiriuo");
+    sprite_set_visible(gSpriteHandler, gBattle->menuSoulSprite, TRUE);
+}
+
+void battle_fight(void) {
+    text_printer_set_string(gBattle->textPrinter, "");
+    sprite_set_visible(gSpriteHandler, gBattle->menuSoulSprite, FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, TRUE);
+    sprite_set_visible(gSpriteHandler, gBattle->fightTiming, TRUE);
+
+    gBattle->isFighting = TRUE;
+}
+
+// Update Choosing
+
+void battle_update_choosing(void) {
+    s16 attackX = 0;
+    u8 damage = 0;
+    // Update Attack
+
+    if (gBattle->isFighting) {
+        sprite_set_x(gSpriteHandler, gBattle->fightTiming, sprite_get_x(gSpriteHandler, gBattle->fightTiming) - 1);
+
+        if (sprite_get_x(gSpriteHandler, gBattle->fightTiming) <= 1) {
+            gBattle->selectedAction = ACTION_NONE;
+            gBattle->isFighting = FALSE;
+            gBattle->state = STATE_DIALOGUE;
+            
+            
+
+            sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_miss, 0, 1, 0, 2);
+
+            return;
+        }
+
+        if (D_03004afc & A_BUTTON) {
+            gBattle->selectedAction = ACTION_NONE;
+            gBattle->isFighting = FALSE;
+            gBattle->state = STATE_DIALOGUE;
+            
+            attackX = sprite_get_x(gSpriteHandler, gBattle->fightTiming);
+
+            if (attackX >= 15 && attackX < 21) { // Critical hit
+                sprite_set_x(gSpriteHandler, gBattle->fightTiming, 17);
+                sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_75, 0, 1, 0, 2);
+                damage = 75;
+
+            } else if (attackX < 15 && attackX >= 11) { // Hitting slightly past critical
+                sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_25, 0, 1, 0, 2);
+                damage = 25;
+
+            } else if (attackX >= 21 && attackX < 26) { // 50 damage
+                sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_50, 0, 1, 0, 2);
+                damage = 50;
+
+            } else if (attackX >= 26 && attackX < 32) { // 25 damage
+                sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_25, 0, 1, 0, 2);
+                damage = 25;
+
+            } else if (attackX >= 32 || attackX < 11) { // MISS!!!
+                sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_miss, 0, 1, 0, 2);
+            }
+
+            sprite_set_visible(gSpriteHandler, gBattle->enemyDamageSprite, TRUE);
+
+            gBattle->enemy.health -= damage;
+
+            return;
+        }
+    }
+
+    // Action Selection
+
+    if (D_03004afc & DPAD_RIGHT && gBattle->highlightedAction < ACTION_DEFEND && gBattle->selectedAction == ACTION_NONE) {
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->highlightedAction], get_battle_btn_animations(gBattle->highlightedAction, FALSE), 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->highlightedAction + 1], get_battle_btn_animations(gBattle->highlightedAction + 1, TRUE), 0, 0, 0, 0);
+        
+        gBattle->highlightedAction++;
+
+        play_sound(&s_menu_cursor1_seqData);
+    }
+
+    if (D_03004afc & DPAD_LEFT && gBattle->highlightedAction > ACTION_FIGHT && gBattle->selectedAction == ACTION_NONE) {
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->highlightedAction], get_battle_btn_animations(gBattle->highlightedAction, FALSE), 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->highlightedAction - 1], get_battle_btn_animations(gBattle->highlightedAction - 1, TRUE), 0, 0, 0, 0);
+
+        gBattle->highlightedAction--;
+
+        play_sound(&s_menu_cursor1_seqData);
+    }
+
+
+    if (D_03004afc & A_BUTTON && gBattle->selectedAction != ACTION_NONE) {
+        play_sound(&s_menu_kettei2_seqData);
+
+        switch (gBattle->highlightedAction)
+        {
+            case ACTION_FIGHT:
+                battle_fight();
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+    if (D_03004afc & A_BUTTON && gBattle->selectedAction == ACTION_NONE) {
+        play_sound(&s_menu_kettei2_seqData);
+
+        switch (gBattle->highlightedAction)
+        {
+            case ACTION_FIGHT:
+                battle_fight_select();
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+    if (D_03004afc & B_BUTTON && gBattle->selectedAction != ACTION_NONE) {
+        gBattle->selectedAction = ACTION_NONE;
+        play_sound(&s_menu_cancel3_seqData);
+        text_printer_set_string(gBattle->textPrinter, "* Biribiriuo blocks the way!");
+        sprite_set_visible(gSpriteHandler, gBattle->menuSoulSprite, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->fightTiming, FALSE);
+    }
 }
 
 // Game Engine Update
@@ -79,28 +235,10 @@ void battle_engine_update(void) {
 
     text_printer_update(gBattle->textPrinter);
 
-    // Action Selection
-
-    if (D_03004afc & DPAD_RIGHT && gBattle->selectedAction < ACTION_DEFEND) {
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], get_battle_btn_animations(gBattle->selectedAction, FALSE), 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction + 1], get_battle_btn_animations(gBattle->selectedAction + 1, TRUE), 0, 0, 0, 0);
-        
-        gBattle->selectedAction++;
-
-        play_sound(&s_menu_cursor1_seqData);
-    }
-
-    if (D_03004afc & DPAD_LEFT && gBattle->selectedAction > ACTION_FIGHT) {
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction], get_battle_btn_animations(gBattle->selectedAction, FALSE), 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gBattle->buttonSprites[gBattle->selectedAction - 1], get_battle_btn_animations(gBattle->selectedAction - 1, TRUE), 0, 0, 0, 0);
-
-        gBattle->selectedAction--;
-
-        play_sound(&s_menu_cursor1_seqData);
-    }
-
-    if (D_03004afc & A_BUTTON) {
-        play_sound(&s_menu_kettei2_seqData);
+    switch(gBattle->state) {
+        case STATE_CHOOSING:
+            battle_update_choosing();
+            break;
     }
 }
 

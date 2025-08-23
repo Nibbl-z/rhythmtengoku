@@ -8,14 +8,24 @@
 // Engine Types:
 struct BattleEngineData {
     u8 version;
+    u8 state;
     struct Battler {
         s16 sprite;
+        u8 health;
     } battler;
     struct Enemy {
         s16 sprite;
+        u8 health;
     } enemy;
     s16 buttonSprites[5];
+    s16 menuSoulSprite;
+    s16 fightIndicator;
+    s16 fightTiming;
+    u8 highlightedAction;
     u8 selectedAction;
+    u8 isFighting;
+    s16 enemyDamageSprite;
+    u8 attackDamage;
     u8 bgScrollTimer;
     struct TextPrinter *textPrinter;
 };
