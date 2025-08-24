@@ -8,6 +8,12 @@ struct Animation *battle_btn_animations[][2] = {
     { anim_defend_btn, anim_defend_btn_selected }
 };
 
+struct Animation *dialogue_animations[3] = {
+    anim_dialogue_bzzt,
+    anim_dialogue_blub,
+    anim_dialogue_buble
+};
+
 struct CompressedData *battle_buffered_textures[] = {
     END_OF_BUFFERED_TEXTURES_LIST
 };

@@ -89,6 +89,9 @@ void battle_engine_start(u32 version) {
 
     gBattle->enemyDamageSprite = sprite_create(gSpriteHandler, anim_miss, 0, 210, 72, 0x4810, 0, 0, 0);
     sprite_set_visible(gSpriteHandler, gBattle->enemyDamageSprite, FALSE);
+
+    gBattle->dialogueBubbleSprite = sprite_create(gSpriteHandler, anim_dialogue_bzzt, 0, 146, 70, 0x4900, 1, 0, 0);
+    sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, FALSE);
 }
 
 void battle_fight_select(void) {
@@ -120,8 +123,7 @@ void battle_update_choosing(void) {
             gBattle->selectedAction = ACTION_NONE;
             gBattle->isFighting = FALSE;
             gBattle->state = STATE_DIALOGUE;
-            
-            
+            gBattle->dialogueTimer = 0;
 
             sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_miss, 0, 1, 0, 2);
 
@@ -159,6 +161,8 @@ void battle_update_choosing(void) {
             sprite_set_visible(gSpriteHandler, gBattle->enemyDamageSprite, TRUE);
 
             gBattle->enemy.health -= damage;
+
+            
 
             return;
         }
@@ -207,7 +211,6 @@ void battle_update_choosing(void) {
             case ACTION_FIGHT:
                 battle_fight_select();
                 break;
-            
             default:
                 break;
         }
@@ -220,6 +223,21 @@ void battle_update_choosing(void) {
         sprite_set_visible(gSpriteHandler, gBattle->menuSoulSprite, FALSE);
         sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, FALSE);
         sprite_set_visible(gSpriteHandler, gBattle->fightTiming, FALSE);
+    }
+}
+
+void battle_update_dialogue(void) {
+    if (gBattle->dialogueTimer > 60) {
+        sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, TRUE);
+        
+        
+        if (D_03004afc & A_BUTTON) {
+            sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, FALSE);
+            gBattle->state = STATE_BATTLEBOX;
+        }
+    } else {
+        sprite_set_anim(gSpriteHandler, gBattle->dialogueBubbleSprite, dialogue_animations[agb_random(3)], 0, 1, 0, 0);
+        gBattle->dialogueTimer++;
     }
 }
 
@@ -238,6 +256,9 @@ void battle_engine_update(void) {
     switch(gBattle->state) {
         case STATE_CHOOSING:
             battle_update_choosing();
+            break;
+        case STATE_DIALOGUE:
+            battle_update_dialogue();
             break;
     }
 }

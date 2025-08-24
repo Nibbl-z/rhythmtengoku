@@ -136,3 +136,18 @@ struct Animation anim_25[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_dialogue_bzzt[] = {
+    /* 000 */ { speech_bzzt, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_dialogue_blub[] = {
+    /* 000 */ { speech_blub, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_dialogue_buble[] = {
+    /* 000 */ { speech_buble, 4 },
+    /* End */ END_ANIMATION
+};
+

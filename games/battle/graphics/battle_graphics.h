@@ -31,6 +31,9 @@ extern struct Animation anim_75[];
 extern struct Animation anim_50[];
 extern struct Animation anim_25[];
 
+extern struct Animation anim_dialogue_bzzt[];
+extern struct Animation anim_dialogue_blub[];
+extern struct Animation anim_dialogue_buble[];
 
 /* BATTLE - COMPRESSED GRAPHICS */
 
