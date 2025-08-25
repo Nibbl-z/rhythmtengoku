@@ -17,6 +17,10 @@ struct BattleEngineData {
         s16 sprite;
         u8 health;
     } enemy;
+    struct Soul {
+        s16 sprite;
+        u8 damageBuffer;
+    } soul;
     s16 buttonSprites[5];
     s16 menuSoulSprite;
     s16 fightIndicator;
@@ -26,6 +30,7 @@ struct BattleEngineData {
     u8 isFighting;
     s16 enemyDamageSprite;
     s16 dialogueBubbleSprite;
+    s16 menuActionSprite;
     u8 dialogueTimer;
     u8 attackDamage;
     u8 bgScrollTimer;
@@ -36,6 +41,7 @@ extern struct CompressedData *battle_buffered_textures[];
 extern struct GraphicsTable battle_gfx_table[];
 extern struct Animation *battle_btn_animations[5][2];
 extern struct Animation *dialogue_animations[3];
+extern struct Animation *action_icons[6];
 
 extern void battle_init_gfx3(void);
 extern void battle_init_gfx2(void);

@@ -151,3 +151,33 @@ struct Animation anim_dialogue_buble[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_action_icon_face[] = {
+    /* 000 */ { action_icon_face, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_action_icon_fight[] = {
+    /* 000 */ { action_icon_fight, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_action_icon_act[] = {
+    /* 000 */ { action_icon_act, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_action_icon_item[] = {
+    /* 000 */ { action_icon_item, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_action_icon_spare[] = {
+    /* 000 */ { action_icon_spare, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_action_icon_defend[] = {
+    /* 000 */ { action_icon_defend, 4 },
+    /* End */ END_ANIMATION
+};
+

@@ -35,11 +35,20 @@ extern struct Animation anim_dialogue_bzzt[];
 extern struct Animation anim_dialogue_blub[];
 extern struct Animation anim_dialogue_buble[];
 
+extern struct Animation anim_action_icon_face[];
+extern struct Animation anim_action_icon_fight[];
+extern struct Animation anim_action_icon_act[];
+extern struct Animation anim_action_icon_item[];
+extern struct Animation anim_action_icon_spare[];
+extern struct Animation anim_action_icon_defend[];
+
 /* BATTLE - COMPRESSED GRAPHICS */
 
 extern struct CompressedData battle_bg_tiles;
 extern struct CompressedData battle_bg_map;
 extern struct CompressedData battle_overlay;
+extern struct CompressedData battle_overlay_selected;
+extern struct CompressedData battle_box;
 extern struct CompressedData battle_obj; 
 
 extern Palette battle_obj_pal[];

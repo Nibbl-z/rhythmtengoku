@@ -14,6 +14,15 @@ struct Animation *dialogue_animations[3] = {
     anim_dialogue_buble
 };
 
+struct Animation *action_icons[6] = {
+    anim_action_icon_fight,
+    anim_action_icon_act,
+    anim_action_icon_item,
+    anim_action_icon_spare,
+    anim_action_icon_defend,
+    anim_action_icon_face,
+};
+
 struct CompressedData *battle_buffered_textures[] = {
     END_OF_BUFFERED_TEXTURES_LIST
 };
@@ -33,6 +42,16 @@ struct GraphicsTable battle_gfx_table[] = {
     /* BG Map */ {
         /* Src.  */ &battle_overlay,
         /* Dest. */ BG_MAP_BASE(0xF000),
+        /* Size  */ COMPRESSED_GFX_SOURCE
+    },
+    /* BG Map */ {
+        /* Src.  */ &battle_overlay_selected,
+        /* Dest. */ BG_MAP_BASE(0xF800),
+        /* Size  */ COMPRESSED_GFX_SOURCE
+    },
+    /* BG Map */ {
+        /* Src.  */ &battle_box,
+        /* Dest. */ BG_MAP_BASE(0xE000),
         /* Size  */ COMPRESSED_GFX_SOURCE
     },
     /* OBJ Tileset */ {

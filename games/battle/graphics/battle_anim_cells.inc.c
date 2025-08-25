@@ -330,3 +330,33 @@ AnimationCel miss_002[] = {
     /* Len */ 1,
     /* 000 */ 0x40fc, 0x4003, 0x016a
 };
+
+AnimationCel action_icon_face[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x0000, 0x0158
+};
+
+AnimationCel action_icon_fight[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x0000, 0x0117
+};
+
+AnimationCel action_icon_act[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x0000, 0x0119
+};
+
+AnimationCel action_icon_item[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x0000, 0x011a
+};
+
+AnimationCel action_icon_spare[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x0000, 0x011b
+};
+
+AnimationCel action_icon_defend[] = {
+    /* Len */ 1,
+    /* 000 */ 0x0000, 0x0000, 0x011c
+};

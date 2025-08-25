@@ -50,11 +50,13 @@ void battle_init_gfx1(void) {
 void battle_engine_start(u32 version) {
     struct Battler *battler;
     struct Enemy *enemy;
+    struct Soul *soul;
 
     gBattle->version = version;
     battle_init_gfx1();
-    scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 29, 1);
-    scene_set_bg_layer_display(BG_LAYER_1, TRUE, 0, 0, 0, 30, 1);
+    scene_set_bg_layer_display(BG_LAYER_3, TRUE, 0, 0, 0, 29, 1);
+    scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 30, 1);
+    scene_set_bg_layer_display(BG_LAYER_1, FALSE, 0, 0, 0, 28, 1);
 
     gBattle->selectedAction = ACTION_NONE;
 
@@ -65,6 +67,10 @@ void battle_engine_start(u32 version) {
     enemy = &gBattle->enemy;
     enemy->sprite = sprite_create(gSpriteHandler, anim_battle_fish, 0, 182, 120, 0x4800, 1, 0, 0);
     enemy->health = 250;
+
+    soul = &gBattle->soul;
+    soul->sprite = sprite_create(gSpriteHandler, anim_soul, 0, 117, 61, 0x4950, 1, 0, 0);
+    sprite_set_visible(gSpriteHandler, soul->sprite, FALSE);
 
     gBattle->textPrinter = text_printer_create_new(get_current_mem_id(), 4, 200, 30);
     text_printer_set_x_y(gBattle->textPrinter, 10, 140);
@@ -92,6 +98,9 @@ void battle_engine_start(u32 version) {
 
     gBattle->dialogueBubbleSprite = sprite_create(gSpriteHandler, anim_dialogue_bzzt, 0, 146, 70, 0x4900, 1, 0, 0);
     sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, FALSE);
+
+    gBattle->menuActionSprite = sprite_create(gSpriteHandler, action_icons[ACTION_NONE], 0, 69, 114, 0x4900, 1, 0, 0); 
+    sprite_set_visible(gSpriteHandler, gBattle->menuActionSprite, FALSE);
 }
 
 void battle_fight_select(void) {
@@ -106,7 +115,17 @@ void battle_fight(void) {
     sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, TRUE);
     sprite_set_visible(gSpriteHandler, gBattle->fightTiming, TRUE);
 
+    scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 31, 1);
     gBattle->isFighting = TRUE;
+
+    sprite_set_anim(gSpriteHandler, gBattle->menuActionSprite, action_icons[ACTION_FIGHT], 0, 1, 0, 0);
+    sprite_set_visible(gSpriteHandler, gBattle->menuActionSprite, TRUE);
+
+    sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[0], FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[1], FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[2], FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[3], FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[4], FALSE);
 }
 
 // Update Choosing
@@ -126,6 +145,7 @@ void battle_update_choosing(void) {
             gBattle->dialogueTimer = 0;
 
             sprite_set_anim(gSpriteHandler, gBattle->enemyDamageSprite, anim_miss, 0, 1, 0, 2);
+            sprite_set_anim(gSpriteHandler, gBattle->menuActionSprite, action_icons[ACTION_NONE], 0, 1, 0, 0);
 
             return;
         }
@@ -159,10 +179,9 @@ void battle_update_choosing(void) {
             }
 
             sprite_set_visible(gSpriteHandler, gBattle->enemyDamageSprite, TRUE);
+            sprite_set_anim(gSpriteHandler, gBattle->menuActionSprite, action_icons[ACTION_NONE], 0, 1, 0, 0);
 
-            gBattle->enemy.health -= damage;
-
-            
+            gBattle->enemy.health -= damage; 
 
             return;
         }
@@ -229,15 +248,39 @@ void battle_update_choosing(void) {
 void battle_update_dialogue(void) {
     if (gBattle->dialogueTimer > 60) {
         sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, TRUE);
-        
+        sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->fightTiming, FALSE);
         
         if (D_03004afc & A_BUTTON) {
             sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, FALSE);
+            scene_set_bg_layer_display(BG_LAYER_1, TRUE, 0, 0, 0, 28, 1);
+            sprite_set_visible(gSpriteHandler, gBattle->soul.sprite, TRUE);
             gBattle->state = STATE_BATTLEBOX;
         }
     } else {
         sprite_set_anim(gSpriteHandler, gBattle->dialogueBubbleSprite, dialogue_animations[agb_random(3)], 0, 1, 0, 0);
         gBattle->dialogueTimer++;
+    }
+}
+
+void battle_update_battlebox(void) {
+    s16 x = sprite_get_x(gSpriteHandler, gBattle->soul.sprite);
+    s16 y = sprite_get_y(gSpriteHandler, gBattle->soul.sprite);
+
+    if (D_03004ac0 & DPAD_LEFT && x > 89) {
+        sprite_set_x(gSpriteHandler, gBattle->soul.sprite, x - 1);
+    }
+
+    if (D_03004ac0 & DPAD_RIGHT && x < 144) {
+        sprite_set_x(gSpriteHandler, gBattle->soul.sprite, x + 1);
+    }
+
+    if (D_03004ac0 & DPAD_UP && y > 33) {
+        sprite_set_y(gSpriteHandler, gBattle->soul.sprite, y - 1);
+    }
+
+    if (D_03004ac0 & DPAD_DOWN && y < 88) {
+        sprite_set_y(gSpriteHandler, gBattle->soul.sprite, y + 1);
     }
 }
 
@@ -247,8 +290,8 @@ void battle_engine_update(void) {
 
     if (gBattle->bgScrollTimer == 20) {
         gBattle->bgScrollTimer = 0;
-        D_03004b10.BG_OFS[2].x += 1;
-        D_03004b10.BG_OFS[2].y += 1;
+        D_03004b10.BG_OFS[3].x += 1;
+        D_03004b10.BG_OFS[3].y += 1;
     }
 
     text_printer_update(gBattle->textPrinter);
@@ -259,6 +302,9 @@ void battle_engine_update(void) {
             break;
         case STATE_DIALOGUE:
             battle_update_dialogue();
+            break;
+        case STATE_BATTLEBOX:
+            battle_update_battlebox();
             break;
     }
 }
