@@ -136,6 +136,19 @@ struct Animation anim_25[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_20[] = {
+    /* 000 */ { attack20_000, 2 },
+    /* 001 */ { attack20_001, 2 },
+    /* 002 */ { attack20_002, 2 },
+    /* 003 */ { attack20_003, 3 },
+    /* 004 */ { attack20_004, 3 },
+    /* 005 */ { attack20_005, 2 },
+    /* 006 */ { attack20_007, 2 },
+    /* 007 */ { attack20_006, 3 },
+    /* 008 */ { attack20_007, 40 },
+    /* End */ END_ANIMATION
+};
+
 struct Animation anim_dialogue_bzzt[] = {
     /* 000 */ { speech_bzzt, 4 },
     /* End */ END_ANIMATION
@@ -178,6 +191,31 @@ struct Animation anim_action_icon_spare[] = {
 
 struct Animation anim_action_icon_defend[] = {
     /* 000 */ { action_icon_defend, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_proj_droplet[] = {
+    /* 000 */ { projectile_droplet, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_proj_droplet_flipped[] = {
+    /* 000 */ { projectile_droplet_flipped, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_proj_spark[] = {
+    /* 000 */ { projectile_spark_1, 4 },
+    /* 001 */ { projectile_spark_2, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_healthbar[] = {
+    /* 000 */ { healthbar_80, 2 },
+    /* 001 */ { healthbar_60, 2 },
+    /* 002 */ { healthbar_40, 2 },
+    /* 003 */ { healthbar_20, 2 },
+    /* 004 */ { healthbar_0, 2 },
     /* End */ END_ANIMATION
 };
 

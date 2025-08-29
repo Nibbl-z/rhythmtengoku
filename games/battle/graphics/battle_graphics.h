@@ -30,6 +30,7 @@ extern struct Animation anim_miss[];
 extern struct Animation anim_75[];
 extern struct Animation anim_50[];
 extern struct Animation anim_25[];
+extern struct Animation anim_20[];
 
 extern struct Animation anim_dialogue_bzzt[];
 extern struct Animation anim_dialogue_blub[];
@@ -41,6 +42,12 @@ extern struct Animation anim_action_icon_act[];
 extern struct Animation anim_action_icon_item[];
 extern struct Animation anim_action_icon_spare[];
 extern struct Animation anim_action_icon_defend[];
+
+extern struct Animation anim_proj_droplet[];
+extern struct Animation anim_proj_droplet_flipped[];
+extern struct Animation anim_proj_spark[];
+
+extern struct Animation anim_healthbar[];
 
 /* BATTLE - COMPRESSED GRAPHICS */
 

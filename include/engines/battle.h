@@ -5,6 +5,17 @@
 
 #include "games/battle/graphics/battle_graphics.h"
 
+// Engine Enums:
+
+#define BATTLE_PROJECTILE_AMOUNT 40
+
+enum ProjectileBehaviour {
+    PROJECTILE_DROPLET,
+    PROJECTILE_SPARK_LEFT,
+    PROJECTILE_SPARK_UP,
+    PROJECTILE_SPARK_RIGHT
+};
+
 // Engine Types:
 struct BattleEngineData {
     u8 version;
@@ -21,6 +32,18 @@ struct BattleEngineData {
         s16 sprite;
         u8 damageBuffer;
     } soul;
+    struct Projectile {
+        u8 active;
+        s16 sprite;
+        u8 scaleX;
+        u8 scaleY;
+        u8 offsetX;
+        u8 offsetY;
+        u8 behaviour;
+        s16 value1;
+        s16 value2;
+        s16 value3;
+    } projectiles[BATTLE_PROJECTILE_AMOUNT];
     s16 buttonSprites[5];
     s16 menuSoulSprite;
     s16 fightIndicator;
@@ -29,11 +52,16 @@ struct BattleEngineData {
     u8 selectedAction;
     u8 isFighting;
     s16 enemyDamageSprite;
+    s16 battlerDamageSprite;
     s16 dialogueBubbleSprite;
     s16 menuActionSprite;
     u8 dialogueTimer;
     u8 attackDamage;
     u8 bgScrollTimer;
+
+    u8 projSpawnTimer;
+
+    s16 healthbarSprite;
     struct TextPrinter *textPrinter;
 };
 
