@@ -54,6 +54,14 @@ void battle_init_gfx1(void) {
     run_func_after_task(task, battle_init_gfx2, 0);
 }
 
+void battle_set_win_script(const struct Beatscript *script) {
+    gBattle->winScript = script;
+}
+
+void battle_set_death_script(const struct Beatscript *script) {
+    gBattle->deathScript = script;
+}
+
 // Game Engine Init.
 void battle_engine_start(u32 version) {
     struct Battler *battler;
@@ -130,6 +138,7 @@ void battle_fight(void) {
     sprite_set_visible(gSpriteHandler, gBattle->fightTiming, TRUE);
 
     scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 31, 1);
+    sprite_set_y(gSpriteHandler, gBattle->healthbarSprite, 113);
     gBattle->isFighting = TRUE;
 
     sprite_set_anim(gSpriteHandler, gBattle->menuActionSprite, action_icons[ACTION_FIGHT], 0, 1, 0, 0);
@@ -195,7 +204,14 @@ void battle_update_choosing(void) {
             sprite_set_visible(gSpriteHandler, gBattle->enemyDamageSprite, TRUE);
             sprite_set_anim(gSpriteHandler, gBattle->menuActionSprite, action_icons[ACTION_NONE], 0, 1, 0, 0);
 
-            gBattle->enemy.health -= damage; 
+            if (gBattle->enemy.health > damage) {
+                gBattle->enemy.health -= damage;
+            } else {
+
+            }
+
+
+            
 
             return;
         }
@@ -268,6 +284,7 @@ void battle_update_dialogue(void) {
         if (D_03004afc & A_BUTTON) {
             sprite_set_visible(gSpriteHandler, gBattle->dialogueBubbleSprite, FALSE);
             scene_set_bg_layer_display(BG_LAYER_1, TRUE, 0, 0, 0, 28, 1);
+            
             sprite_set_visible(gSpriteHandler, gBattle->soul.sprite, TRUE);
             
             gBattle->state = STATE_BATTLEBOX;
@@ -304,6 +321,8 @@ void battle_destroy_projectile(struct Projectile *projectile) {
 
     projectile = NULL;
 }
+
+// ATTACK 00 - Electric Droplets
 
 void battle_spawn_droplet(void) {
     struct Projectile droplet;
@@ -393,6 +412,62 @@ void battle_update_spark(struct Projectile *spark) {
     }
 }
 
+// ATTACK 01 - Night Walk Platforms
+
+void battle_spawn_platform(void) {
+    struct Projectile platform1;
+    struct Projectile platform2;
+    u8 index = battle_get_available_projectile_id();
+    u8 direction = agb_random(2) == 1;
+    if (index == 255) {return;}
+
+    platform1.active = TRUE;
+    platform1.sprite = sprite_create(
+        gSpriteHandler, 
+        anim_platform, 
+        0, 
+        direction ? 0 : 240,
+        50 + agb_random(40),
+        0, 1, 0, 0);
+    platform1.scaleX = 6;
+    platform1.scaleY = 64;
+    platform1.offsetX = 1;
+    platform1.offsetY = 0;
+    platform1.value1 = direction;
+    platform1.behaviour = PROJECTILE_PLATFORM;
+
+    gBattle->projectiles[index] = platform1;
+
+    platform2.active = TRUE;
+    platform2.sprite = sprite_create(
+        gSpriteHandler, 
+        anim_platform_flipped, 
+        0, 
+        direction ? 0 : 240,
+        sprite_get_y(gSpriteHandler, platform1.sprite) - 24,
+        0, 1, 0, 0);
+    platform2.scaleX = 6;
+    platform2.scaleY = 72;
+    platform2.offsetX = 1;
+    platform2.offsetY = -64;
+    platform2.value1 = direction;
+    platform2.behaviour = PROJECTILE_PLATFORM;
+
+    gBattle->projectiles[index + 1] = platform2;
+}
+
+void battle_update_platform(struct Projectile *platform) {
+    sprite_set_x(gSpriteHandler, platform->sprite, sprite_get_x(gSpriteHandler, platform->sprite) + (platform->value1 ? 1 : -1));
+
+    if (platform->value1 && sprite_get_x(gSpriteHandler, platform->sprite) == 240) {
+        battle_destroy_projectile(platform);
+    }
+
+    if (!platform->value1 && sprite_get_x(gSpriteHandler, platform->sprite) == 0) {
+        battle_destroy_projectile(platform);
+    } 
+}
+
 void battle_update_battlebox(void) {
     s16 x = sprite_get_x(gSpriteHandler, gBattle->soul.sprite);
     s16 y = sprite_get_y(gSpriteHandler, gBattle->soul.sprite);
@@ -420,11 +495,67 @@ void battle_update_battlebox(void) {
     }
 
     gBattle->projSpawnTimer++;
+    gBattle->battleEndTimer++;
 
-    if (gBattle->projSpawnTimer == 55) {
+    if (gBattle->battleEndTimer == 500) {
+        gBattle->battleEndTimer = 0;
+        gBattle->dialogueTimer = 0;
+        gBattle->state = STATE_CHOOSING;
+        
+        for (i = 0; i < BATTLE_PROJECTILE_AMOUNT; i++) {
+            projectile = &gBattle->projectiles[i];
+            battle_destroy_projectile(projectile);
+        }
+
+        text_printer_set_string(gBattle->textPrinter, "* Biribiriuo blocks the way!");
+        sprite_set_visible(gSpriteHandler, gBattle->menuSoulSprite, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->fightIndicator, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->fightTiming, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->menuActionSprite, FALSE);
+        sprite_set_visible(gSpriteHandler, gBattle->soul.sprite, FALSE);
+
+        scene_set_bg_layer_display(BG_LAYER_2, TRUE, 0, 0, 0, 30, 1);
+        scene_set_bg_layer_display(BG_LAYER_1, FALSE, 0, 0, 0, 28, 1);
+
+        sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[0], TRUE);
+        sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[1], TRUE);
+        sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[2], TRUE);
+        sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[3], TRUE);
+        sprite_set_visible(gSpriteHandler, gBattle->buttonSprites[4], TRUE);
+
+        sprite_set_y(gSpriteHandler, gBattle->healthbarSprite, 98);
+        sprite_set_x(gSpriteHandler, gBattle->fightTiming, 100);
+
+        gBattle->currentAttack++;
+
+        if (gBattle->currentAttack == 2) {
+            gBattle->currentAttack = 0;
+        } 
+
+        return;
+    }
+
+    switch(gBattle->currentAttack) {
+        case 0:
+            if (gBattle->projSpawnTimer == 45) {
+                gBattle->projSpawnTimer = 0;
+                battle_spawn_droplet();
+            }
+            break;
+        case 1:
+            if (gBattle->projSpawnTimer == 40) {
+                gBattle->projSpawnTimer = 0;
+                battle_spawn_platform();
+            }
+            break;
+    }
+
+    /*if (gBattle->projSpawnTimer == 45) {
         gBattle->projSpawnTimer = 0;
         battle_spawn_droplet();
-    }
+    }*/
+
+    
     
     if (gBattle->soul.damageBuffer > 0) {
         gBattle->soul.damageBuffer--;
@@ -456,6 +587,9 @@ void battle_update_battlebox(void) {
                 case PROJECTILE_SPARK_UP:
                 case PROJECTILE_SPARK_RIGHT:
                     battle_update_spark(projectile);
+                    break;
+                case PROJECTILE_PLATFORM:
+                    battle_update_platform(projectile);
                     break;
             }
         }
@@ -492,7 +626,6 @@ void battle_engine_update(void) {
     } else {
         sprite_set_visible(gSpriteHandler, gBattle->healthbarSprite, FALSE);
     }
-    
 }
 
 // Game Engine Stop

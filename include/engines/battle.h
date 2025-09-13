@@ -13,7 +13,8 @@ enum ProjectileBehaviour {
     PROJECTILE_DROPLET,
     PROJECTILE_SPARK_LEFT,
     PROJECTILE_SPARK_UP,
-    PROJECTILE_SPARK_RIGHT
+    PROJECTILE_SPARK_RIGHT,
+    PROJECTILE_PLATFORM
 };
 
 // Engine Types:
@@ -35,33 +36,42 @@ struct BattleEngineData {
     struct Projectile {
         u8 active;
         s16 sprite;
-        u8 scaleX;
-        u8 scaleY;
-        u8 offsetX;
-        u8 offsetY;
+        s8 scaleX;
+        s8 scaleY;
+        s8 offsetX;
+        s8 offsetY;
         u8 behaviour;
         s16 value1;
         s16 value2;
         s16 value3;
     } projectiles[BATTLE_PROJECTILE_AMOUNT];
+    
+
+    // Sprites
     s16 buttonSprites[5];
     s16 menuSoulSprite;
     s16 fightIndicator;
     s16 fightTiming;
-    u8 highlightedAction;
-    u8 selectedAction;
-    u8 isFighting;
     s16 enemyDamageSprite;
     s16 battlerDamageSprite;
     s16 dialogueBubbleSprite;
     s16 menuActionSprite;
-    u8 dialogueTimer;
-    u8 attackDamage;
-    u8 bgScrollTimer;
+    s16 healthbarSprite;
 
+    // Timers
+    u8 dialogueTimer;
+    u8 bgScrollTimer;
+    u16 battleEndTimer;
     u8 projSpawnTimer;
 
-    s16 healthbarSprite;
+    // Values
+    u8 highlightedAction;
+    u8 selectedAction;
+    u8 isFighting;
+    u8 currentAttack;
+    const struct Beatscript *winScript;
+    const struct Beatscript *deathScript;
+    
     struct TextPrinter *textPrinter;
 };
 
@@ -78,3 +88,7 @@ extern void battle_engine_start(u32 version);
 extern void battle_engine_update(void);
 extern void battle_engine_stop(void);
 extern void battle_input_event(u32 pressed, u32 released);
+
+
+extern void battle_set_win_script(const struct Beatscript *script);
+extern void battle_set_death_script(const struct Beatscript *script);

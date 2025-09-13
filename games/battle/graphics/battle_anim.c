@@ -219,3 +219,13 @@ struct Animation anim_healthbar[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_platform[] = {
+    /* 000 */ { projectile_platform, 4 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_platform_flipped[] = {
+    /* 000 */ { projectile_platform_flipped, 4 },
+    /* End */ END_ANIMATION
+};
+

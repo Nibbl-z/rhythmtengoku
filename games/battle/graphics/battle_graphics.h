@@ -46,6 +46,8 @@ extern struct Animation anim_action_icon_defend[];
 extern struct Animation anim_proj_droplet[];
 extern struct Animation anim_proj_droplet_flipped[];
 extern struct Animation anim_proj_spark[];
+extern struct Animation anim_platform[];
+extern struct Animation anim_platform_flipped[];
 
 extern struct Animation anim_healthbar[];
 

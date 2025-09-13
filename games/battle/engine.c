@@ -81,7 +81,8 @@ EngineEvent battle_common_events[] = {
 };
 
 EngineEvent battle_engine_events[] = {
-
+    battle_set_win_script,
+    battle_set_death_script
 };
 
 struct GameEngine battle_engine = {
