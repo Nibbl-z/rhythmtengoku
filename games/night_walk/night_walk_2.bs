@@ -54,8 +54,8 @@ struct night_walk_2_marking_criteria_2
     /* Negative Remark */     .word D_0805b2d0
     /* Flags */               .hword CHECK_AVERAGE_HITS | CHECK_AVERAGE_MISSES
     /* Pos: Required Hits */  .hword 0x100 @ 100%
-    /* Neg: Minimum Hits */   .hword 0xB3 @ 70%
-    /* Neg: Maximum Misses */ .hword 0x100 @ 100%
+    /* Neg: Minimum Hits */   .hword 0x100 @ 70%
+    /* Neg: Maximum Misses */ .hword 0x0 @ 100%
 endstruct
 
 struct night_walk_2_marking_criteria
@@ -86,6 +86,48 @@ script script_night_walk_2_end
     rest 24
 stop
 
+script script_battle_win
+    set_marking_criteria 2
+    fade_music_out 96
+    rest 24
+    rest 24
+    disable_pause_menu
+    rest 24
+    disable_play_inputs
+    fade_screen_out 12, BLACK
+    rest 24
+    rest 24
+stop
+
+script script_battle_death
+    set_marking_criteria 2
+    fade_music_out 0
+    rest 24
+    rest 24
+    rest 24
+    battle_explode_soul
+    play_sfx s_f_fail_perfect_seqData
+    rest 24
+    rest 24
+    rest 24
+    rest 24
+    start_tracking_inputs
+    set_marking_criteria 0
+    switch_loop_counter
+        case 255
+            run gameplay_add_cue_result_miss, 0
+            break
+        default
+            run gameplay_add_cue_result_miss, 0
+    end_switch
+    stop_tracking_inputs
+    disable_pause_menu
+    rest 24
+    disable_play_inputs
+    fade_screen_out 12, BLACK
+    rest 24
+    rest 24
+stop
 
 script script_night_walk_2_main
     set_results_header D_0805b308
@@ -163,6 +205,8 @@ script script_night_walk_2_main
     rest 24
     set_game_fade_in_time 0
     load_battle
+    battle_set_win_script script_battle_win
+    battle_set_death_script script_battle_death
     loop_start
         rest 24
         rest 24

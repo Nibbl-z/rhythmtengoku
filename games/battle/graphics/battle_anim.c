@@ -229,3 +229,15 @@ struct Animation anim_platform_flipped[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_soul_bits[] = {
+    /* 000 */ { soul_bit_1, 6 },
+    /* 001 */ { soul_bit_2, 6 },
+    /* 002 */ { soul_bit_3, 6 },
+    /* 003 */ { soul_bit_2, 6 },
+    /* End */ END_ANIMATION
+};
+
+struct Animation anim_soul_death[] = {
+    /* 000 */ { soul_death, 4 },
+    /* End */ END_ANIMATION
+};

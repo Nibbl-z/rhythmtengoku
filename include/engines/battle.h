@@ -33,6 +33,15 @@ struct BattleEngineData {
         s16 sprite;
         u8 damageBuffer;
     } soul;
+    struct SoulBit {
+        s16 sprite;
+        s8 xDirection;
+        u8 xCooldown;
+        u8 xTimer;
+        u8 yCooldown;
+        s8 yDirection;
+        u8 yTimer;
+    } soulBits[4];
     struct Projectile {
         u8 active;
         s16 sprite;
@@ -57,6 +66,7 @@ struct BattleEngineData {
     s16 dialogueBubbleSprite;
     s16 menuActionSprite;
     s16 healthbarSprite;
+    //s16 soulBitSprites[4];
 
     // Timers
     u8 dialogueTimer;
@@ -68,6 +78,7 @@ struct BattleEngineData {
     u8 highlightedAction;
     u8 selectedAction;
     u8 isFighting;
+    u8 soulExploding;
     u8 currentAttack;
     const struct Beatscript *winScript;
     const struct Beatscript *deathScript;
@@ -92,3 +103,4 @@ extern void battle_input_event(u32 pressed, u32 released);
 
 extern void battle_set_win_script(const struct Beatscript *script);
 extern void battle_set_death_script(const struct Beatscript *script);
+extern void battle_explode_soul(void);

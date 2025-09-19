@@ -468,6 +468,73 @@ void battle_update_platform(struct Projectile *platform) {
     } 
 }
 
+void battle_death(void) {
+    u8 i;
+    struct Projectile *projectile;
+
+    for (i = 0; i < BATTLE_PROJECTILE_AMOUNT; i++) {
+        projectile = &gBattle->projectiles[i];
+        sprite_set_visible(gSpriteHandler, projectile->sprite, FALSE);
+    }
+
+    sprite_set_visible(gSpriteHandler, gBattle->battler.sprite, FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->enemy.sprite, FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->battlerDamageSprite, FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->healthbarSprite, FALSE);
+    sprite_set_visible(gSpriteHandler, gBattle->menuActionSprite, FALSE);
+
+    scene_set_bg_layer_display(BG_LAYER_3, FALSE, 0, 0, 0, 29, 1);
+    scene_set_bg_layer_display(BG_LAYER_2, FALSE, 0, 0, 0, 30, 1);
+    scene_set_bg_layer_display(BG_LAYER_1, FALSE, 0, 0, 0, 28, 1);
+
+    sprite_set_anim(gSpriteHandler, gBattle->soul.sprite, anim_soul_death, 0, 1, 0, 0);
+}
+
+void battle_explode_soul(void) {
+    u8 i;
+    s16 x = sprite_get_x(gSpriteHandler, gBattle->soul.sprite);
+    s16 y = sprite_get_y(gSpriteHandler, gBattle->soul.sprite);
+
+    struct SoulBit bits[4];
+
+    sprite_set_visible(gSpriteHandler, gBattle->soul.sprite, FALSE);
+
+    for (i = 0; i < 4; i++) {
+        bits[i].sprite = sprite_create(gSpriteHandler, anim_soul_bits, 0, x, y, 0, 1, 0, 0);
+
+        switch (i) {
+            case 0:
+                bits[i].xDirection = 1;
+                bits[i].xCooldown = 2;
+                bits[i].yCooldown = 12;
+                break;
+            case 1:
+                bits[i].xDirection = 1;
+                bits[i].xCooldown = 3;
+                bits[i].yCooldown = 10;
+                break;
+            case 2:
+                bits[i].xDirection = -1;
+                bits[i].xCooldown = 2;
+                bits[i].yCooldown = 12;
+                break;
+            case 3:
+                bits[i].xDirection = -1;
+                bits[i].xCooldown = 3;
+                bits[i].yCooldown = 10;
+                break;
+        }
+
+        bits[i].xTimer = 0;
+        bits[i].yTimer = 0;
+        bits[i].yDirection = 2;
+
+        gBattle->soulBits[i] = bits[i];
+    }
+
+    gBattle->soulExploding = TRUE;
+}
+
 void battle_update_battlebox(void) {
     s16 x = sprite_get_x(gSpriteHandler, gBattle->soul.sprite);
     s16 y = sprite_get_y(gSpriteHandler, gBattle->soul.sprite);
@@ -477,6 +544,8 @@ void battle_update_battlebox(void) {
     u8 i;
 
     struct Projectile *projectile;
+
+    if (gBattle->battler.health == 0) { return; }
 
     if (D_03004ac0 & DPAD_LEFT && x > 89) {
         sprite_set_x(gSpriteHandler, gBattle->soul.sprite, x - 1);
@@ -576,6 +645,13 @@ void battle_update_battlebox(void) {
                 play_sound(&s_f_drumtech_miss_seqData);
                 gBattle->soul.damageBuffer = 60;
                 gBattle->battler.health--;
+
+                if (gBattle->battler.health == 0) {
+                    gameplay_add_cue_result_miss(0);
+                    func_0801d95c(gBattle->deathScript);
+                    battle_death();
+                    return;
+                }
             }
             
             switch (projectile->behaviour)
@@ -598,6 +674,9 @@ void battle_update_battlebox(void) {
 
 // Game Engine Update
 void battle_engine_update(void) {
+    struct SoulBit *bit;
+    u8 i;
+
     gBattle->bgScrollTimer += 1;
 
     if (gBattle->bgScrollTimer == 20) {
@@ -620,11 +699,30 @@ void battle_engine_update(void) {
             break;
     }
 
-    if (gBattle->battler.health < 5) {
+    if (gBattle->battler.health < 5 && gBattle->battler.health > 0) {
         sprite_set_visible(gSpriteHandler, gBattle->healthbarSprite, TRUE);
         sprite_set_anim(gSpriteHandler, gBattle->healthbarSprite, anim_healthbar, -(gBattle->battler.health - 4), 0, 0, 0);
     } else {
         sprite_set_visible(gSpriteHandler, gBattle->healthbarSprite, FALSE);
+    }
+
+    for (i = 0; i < 4; i++) {
+        bit = &gBattle->soulBits[i];
+
+        bit->xTimer++;
+        bit->yTimer++;
+
+        if (bit->xTimer == bit->xCooldown) {
+            bit->xTimer = 0;
+            sprite_set_x(gSpriteHandler, bit->sprite, sprite_get_x(gSpriteHandler, bit->sprite) + bit->xDirection);
+        }
+
+        if (bit->yTimer == bit->yCooldown) {
+            bit->yTimer = 0;
+            bit->yDirection--;
+        }
+
+        sprite_set_y(gSpriteHandler, bit->sprite, sprite_get_y(gSpriteHandler, bit->sprite) - bit->yDirection);
     }
 }
 

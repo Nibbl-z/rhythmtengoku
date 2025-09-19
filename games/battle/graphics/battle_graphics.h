@@ -23,6 +23,8 @@ extern struct Animation anim_defend_btn[];
 extern struct Animation anim_defend_btn_selected[];
 
 extern struct Animation anim_soul[];
+extern struct Animation anim_soul_death[];
+extern struct Animation anim_soul_bits[];
 
 extern struct Animation anim_fight_indicator[];
 extern struct Animation anim_fight_timing[];
