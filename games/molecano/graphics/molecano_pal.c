@@ -1,15 +1,15 @@
 #include "global.h"
 #include "graphics.h"
 
-// [D_088ca170] Night Walk Palette
+// [D_088ca170] Molecano Palette
 Palette molecano_pal[] = {
     /* PALETTE 00 */ {
         /* 00 */ TO_RGB555(0x000000),
-        /* 01 */ TO_RGB555(0x000000),
-        /* 02 */ TO_RGB555(0x980008),
-        /* 03 */ TO_RGB555(0xF80800),
-        /* 04 */ TO_RGB555(0x98A008),
-        /* 05 */ TO_RGB555(0xF0F818),
+        /* 01 */ TO_RGB555(0xC89898),
+        /* 02 */ TO_RGB555(0x000000),
+        /* 03 */ TO_RGB555(0xF8D800),
+        /* 04 */ TO_RGB555(0xD8B0B0),
+        /* 05 */ TO_RGB555(0xF8F8F8),
         /* 06 */ TO_RGB555(0x18B010),
         /* 07 */ TO_RGB555(0x28F818),
         /* 08 */ TO_RGB555(0x60B8C8),

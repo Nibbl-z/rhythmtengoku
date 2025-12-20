@@ -6,9 +6,11 @@
 /* MOLECANO - ANIMATIONS */
 
 extern struct Animation anim_mole_jump[];
-extern struct Animation anim_mole_crawl[];
+extern struct Animation anim_mole_land[];
 extern struct Animation anim_mole_stop[];
-
+extern struct Animation anim_mole_flip_jump[];
+extern struct Animation anim_mole_flip_land[];
+extern struct Animation anim_mole_flip_stop[];
 
 /* NIGHT WALK - COMPRESSED GRAPHICS */
 
