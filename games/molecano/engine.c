@@ -33,7 +33,31 @@ struct GraphicsTable molecano_gfx_table[] = {
     END_OF_GRAPHICS_TABLE
 };
 
+struct CueDefinition molecano_slow_cue = {
+    /* Unknown Param.  */ 0,
+    /* Input Buttons   */ PRESS_BUTTON(A_BUTTON),
+    /* Total Duration  */ 0x18,
+    /* Hit Window      */ -0x04, 0x04,
+    /* Barely Window   */ -0x06, 0x06,
+    /* Tempo-Dependent */ FALSE,
+    /* Force-Delete    */ FALSE,
+    /* Size in Memory  */ sizeof(struct MolecanoCue),
+    /* Func. Spawn     */ molecano_cue_spawn,
+    /* Spawn Parameter */ 24,
+    /* Func. Update    */ molecano_cue_update,
+    /* Func. Despawn   */ molecano_cue_despawn,
+    /* Func. Hit       */ molecano_cue_hit,
+    /* Func. Barely    */ molecano_cue_barely,
+    /* Func. Miss      */ molecano_cue_miss,
+    /* SFX Spawn       */ &s_f_boxing_fly_nml_seqData,
+    /* SFX Hit         */ &s_f_boxing_just_hati_seqData,
+    /* SFX Barely      */ &s_witch_donats_seqData,
+    /* SFX Miss        */ NULL,
+    /* Miss Condition  */ NULL
+};
+
 struct CueDefinition *molecano_cue_index[] = {
+    &molecano_slow_cue,
     END_OF_CUE_INDEX
 };
 
