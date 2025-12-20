@@ -30,21 +30,27 @@ void molecano_init_gfx1(void) {
 void molecano_engine_start(u32 version) {
     struct Mole otherMole;
     struct Mole mole;
+    struct Cart cart;
     
     gMolecano->version = version;
     molecano_init_gfx1();
-
     
-    otherMole.sprite = sprite_create(gSpriteHandler, anim_mole_flip_stop, 0, 60, 100, 0x4000, 1, 0, 0);
+    otherMole.sprite = sprite_create(gSpriteHandler, anim_mole_flip_stop, 0, 65, 101, 0x4000, 1, 0, 0);
     otherMole.jumpx = 0;
     otherMole.jumping = FALSE;
 
     gMolecano->otherMole = otherMole;
     
-    mole.sprite = sprite_create(gSpriteHandler, anim_mole_stop, 0, 150, 100, 0x4000, 1, 0, 0);
+    mole.sprite = sprite_create(gSpriteHandler, anim_mole_stop, 0, 145, 101, 0x4000, 1, 0, 0);
     mole.jumpx = 0;
     mole.jumping = FALSE;
 
+    cart.sprite = sprite_create(gSpriteHandler, anim_cart_stop, 0, 77, 132, 0x3000, 0, 0, 0);
+    cart.leftWheel = sprite_create(gSpriteHandler, anim_wheel_spin, 0, 82, 134, 0x2999, 0, 0, 0);
+    cart.rightWheel = sprite_create(gSpriteHandler, anim_wheel_spin, 0, 146, 134, 0x2999, 0, 0, 0);
+    cart.moving = FALSE;
+
+    gMolecano->cart = cart;
     gMolecano->mole = mole;
 
     gMolecano->jumpDuration = ticks_to_frames(24);
@@ -56,10 +62,10 @@ void molecano_engine_update(void) {
     u32 x;
     struct Mole *mole = &gMolecano->mole;
     struct Mole *otherMole = &gMolecano->otherMole;
+    struct Cart *cart = &gMolecano->cart;
     s32 jumpDuration = gMolecano->jumpDuration;
 
-    if (mole->jumping == TRUE) {
-        sprite_set_anim(gSpriteHandler, mole->sprite, anim_mole_jump, 0, 0, 0, 0);
+    if (mole->jumping == TRUE) { 
         mole->jumpx += 1;
         
         sprite_set_y(gSpriteHandler, mole->sprite, 100 + ((mole->jumpx) * (mole->jumpx - jumpDuration)) / ((jumpDuration * jumpDuration) / 150));
@@ -75,10 +81,15 @@ void molecano_engine_update(void) {
         otherMole->jumpx += 1;
         
         sprite_set_y(gSpriteHandler, otherMole->sprite, 100 + ((otherMole->jumpx) * (otherMole->jumpx - jumpDuration)) / ((jumpDuration * jumpDuration) / 150));
-        sprite_set_anim(gSpriteHandler, otherMole->sprite, anim_mole_flip_jump, 0, 0, 0, 0);
+        
         if (otherMole->jumpx > jumpDuration) {
             mole->jumping = TRUE;
-            sprite_set_anim(gSpriteHandler, otherMole->sprite, anim_mole_flip_land, 0, 0, 0, 0);
+            sprite_set_anim(gSpriteHandler, mole->sprite, anim_mole_jump, 0, 1, 0, 0);
+            sprite_set_anim(gSpriteHandler, otherMole->sprite, gMolecano->stopOnNext ? anim_mole_flip_stop : anim_mole_flip_land, 0, 1, 0, 0);
+            sprite_set_anim(gSpriteHandler, cart->sprite, anim_cart_left, 0, 1, 0, 0);
+            sprite_set_anim(gSpriteHandler, cart->leftWheel, anim_wheel_spin, 0, 1, 0, 0);
+            sprite_set_anim(gSpriteHandler, cart->rightWheel, anim_wheel_spin, 0, 1, 0, 0);
+
             otherMole->jumping = FALSE;
             otherMole->jumpx = 0;
             sprite_set_y(gSpriteHandler, otherMole->sprite, 100);
@@ -103,13 +114,16 @@ void molecano_cue_spawn(struct Cue *cue, struct MolecanoCue *data, u32 type) {
 
     if (type == 1 || type == 2) {
         data->stop = FALSE;
+        gMolecano->stopOnNext = FALSE;
     } else {
         data->stop = TRUE;
+        gMolecano->stopOnNext = TRUE;
     }
 
     gMolecano->jumpDuration = ticks_to_frames(type % 2 == 0 ? 12 : 24);
     gMolecano->otherMole.jumpx = 0;
     gMolecano->otherMole.jumping = TRUE;
+    sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_jump, 0, 1, 0, 0);
 }
 
 void molecano_cue_update(struct Cue *cue, struct MolecanoCue *data, u32 runningTime, u32 duration) {
@@ -123,26 +137,26 @@ void molecano_cue_hit(struct Cue *cue, struct MolecanoCue *data) {
         sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
         sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_stop, 0, 0, 0, 0);
     } else {
-        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_land, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_land, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_land, 0, 1, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->cart.sprite, anim_cart_right, 0, 1, 0, 0);
     }
     
 }
 void molecano_cue_barely(struct Cue *cue, struct MolecanoCue *data) {
      if (data->stop) {
-        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_stop, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 1, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_stop, 0, 1, 0, 0);
     } else {
-        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_land, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_land, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_land, 0, 1, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->cart.sprite, anim_cart_right, 0, 1, 0, 0);
     }
 }
 void molecano_cue_miss(struct Cue *cue, struct MolecanoCue *data) {
  if (data->stop) {
-        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_stop, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 1, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_stop, 0, 1, 0, 0);
     } else {
-        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_land, 0, 0, 0, 0);
-        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_land, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_land, 0, 1, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->cart.sprite, anim_cart_right, 0, 1, 0, 0);
     }
 }

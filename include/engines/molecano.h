@@ -17,11 +17,15 @@ struct Mole {
 struct MolecanoEngineData {
     u8 version;
     s32 jumpDuration;
+    u8 stopOnNext;
     struct Mole otherMole;
     struct Mole mole;
     struct Cart {
         s16 sprite;
-    };
+        s16 leftWheel;
+        s16 rightWheel;
+        u8 moving;
+    } cart;
 };
 
 // i dont think i need anything?

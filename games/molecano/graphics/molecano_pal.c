@@ -4,14 +4,14 @@
 // [D_088ca170] Molecano Palette
 Palette molecano_pal[] = {
     /* PALETTE 00 */ {
-        /* 00 */ TO_RGB555(0x000000),
+        /* 00 */ TO_RGB555(0x505050),
         /* 01 */ TO_RGB555(0xC89898),
         /* 02 */ TO_RGB555(0x000000),
         /* 03 */ TO_RGB555(0xF8D800),
         /* 04 */ TO_RGB555(0xD8B0B0),
         /* 05 */ TO_RGB555(0xF8F8F8),
-        /* 06 */ TO_RGB555(0x18B010),
-        /* 07 */ TO_RGB555(0x28F818),
+        /* 06 */ TO_RGB555(0xD0D0D0),
+        /* 07 */ TO_RGB555(0x787878),
         /* 08 */ TO_RGB555(0x60B8C8),
         /* 09 */ TO_RGB555(0x78E0F8),
         /* 10 */ TO_RGB555(0x0010B8),

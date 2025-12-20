@@ -11,6 +11,10 @@ extern struct Animation anim_mole_stop[];
 extern struct Animation anim_mole_flip_jump[];
 extern struct Animation anim_mole_flip_land[];
 extern struct Animation anim_mole_flip_stop[];
+extern struct Animation anim_cart_stop[];
+extern struct Animation anim_cart_left[];
+extern struct Animation anim_cart_right[];
+extern struct Animation anim_wheel_spin[];
 
 /* NIGHT WALK - COMPRESSED GRAPHICS */
 
