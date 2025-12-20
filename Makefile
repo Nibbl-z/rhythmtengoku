@@ -47,7 +47,7 @@ define print
 endef
 
 # Whether to build a byte-for-byte matching ROM
-NONMATCHING ?= 0
+NONMATCHING ?= 1
 
 # Revision to build
 REV ?= 0
@@ -148,7 +148,8 @@ INCLUDE	:=	-I $(foreach dir,$(INCLUDES),$(wildcard $(dir)/*.h)) \
 
 # If nonmatching, print a generic message
 # otherwise check if the ROM matches the official ROM
-default: $(OUTPUT).gba
+
+default: $(OUTPUT).gba $(BUILD)/rhythmtengoku.sav
 	$(V)if [ "$(NONMATCHING)" = "1" ]; then \
 		echo "Build succeeded!"; \
 	else \
@@ -264,6 +265,7 @@ $(OFILES_GENERATED): $(BUILD)/%.s.o : $(BUILD)/%.s | $(BUILD_DIRS)
 	$(V)$(AS) -MD $(BUILD)/$*.d -march=armv4t -o $@ $(BUILD)/$*.s
 
 -include $(addprefix $(BUILD)/,$(CFILES:.c=.d))
+
 
 #---------------------------------------------------------------------------------------
 
