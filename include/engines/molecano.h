@@ -26,7 +26,7 @@ struct MolecanoEngineData {
 
 // i dont think i need anything?
 struct MolecanoCue {
-    u8 unk;
+    u8 stop;
 };
 
 extern struct CompressedData *molecano_buffered_textures[];

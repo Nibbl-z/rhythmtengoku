@@ -18,3 +18,8 @@ struct Animation anim_mole_crawl[] = {
     /* End */ END_ANIMATION
 };
 
+struct Animation anim_mole_stop[] = {
+    /* 000 */ { molecano_cel000, 4 },
+    /* End */ END_ANIMATION
+};
+

@@ -7,6 +7,8 @@
 
 extern struct Animation anim_mole_jump[];
 extern struct Animation anim_mole_crawl[];
+extern struct Animation anim_mole_stop[];
+
 
 /* NIGHT WALK - COMPRESSED GRAPHICS */
 

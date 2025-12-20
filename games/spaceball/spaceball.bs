@@ -129,7 +129,13 @@ script script_spaceball_main
     spawn_cue 0x00
     rest 48
     spawn_cue 0x00
-    rest 100
+    rest 48
+    spawn_cue 0x02
+    rest 48
+    rest 24
+    rest 24
+    rest 48
+    rest 24
     rest 21
     rest 27
     stop_tracking_perfect_campaign

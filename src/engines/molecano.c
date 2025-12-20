@@ -35,13 +35,13 @@ void molecano_engine_start(u32 version) {
     molecano_init_gfx1();
 
     
-    otherMole.sprite = sprite_create(gSpriteHandler, anim_mole_crawl, 0, 120-30, 100, 0x4000, 1, 0, 0);
+    otherMole.sprite = sprite_create(gSpriteHandler, anim_mole_stop, 0, 120-30, 100, 0x4000, 1, 0, 0);
     otherMole.jumpx = 0;
     otherMole.jumping = FALSE;
 
     gMolecano->otherMole = otherMole;
     
-    mole.sprite = sprite_create(gSpriteHandler, anim_mole_crawl, 0, 120+30, 100, 0x4000, 1, 0, 0);
+    mole.sprite = sprite_create(gSpriteHandler, anim_mole_stop, 0, 120+30, 100, 0x4000, 1, 0, 0);
     mole.jumpx = 0;
     mole.jumping = FALSE;
 
@@ -56,15 +56,15 @@ void molecano_engine_update(void) {
     u32 x;
     struct Mole *mole = &gMolecano->mole;
     struct Mole *otherMole = &gMolecano->otherMole;
+    s32 jumpDuration = gMolecano->jumpDuration;
 
     if (mole->jumping == TRUE) {
         sprite_set_anim(gSpriteHandler, mole->sprite, anim_mole_jump, 0, 0, 0, 0);
         mole->jumpx += 1;
         
-        sprite_set_y(gSpriteHandler, mole->sprite, 100 + ((mole->jumpx) * (mole->jumpx - gMolecano->jumpDuration)) / 5);
+        sprite_set_y(gSpriteHandler, mole->sprite, 100 + ((mole->jumpx) * (mole->jumpx - jumpDuration)) / ((jumpDuration * jumpDuration) / 150));
        
-        if (mole->jumpx > gMolecano->jumpDuration) {
-            sprite_set_anim(gSpriteHandler, mole->sprite, anim_mole_crawl, 0, 0, 0, 0);
+        if (mole->jumpx > jumpDuration) {
             mole->jumping = FALSE;
             mole->jumpx = 0;
             sprite_set_y(gSpriteHandler, mole->sprite, 100);
@@ -74,9 +74,10 @@ void molecano_engine_update(void) {
     if (otherMole->jumping == TRUE) {
         otherMole->jumpx += 1;
         
-        sprite_set_y(gSpriteHandler, otherMole->sprite, 100 + ((otherMole->jumpx) * (otherMole->jumpx - gMolecano->jumpDuration)) / 5);
+        sprite_set_y(gSpriteHandler, otherMole->sprite, 100 + ((otherMole->jumpx) * (otherMole->jumpx - jumpDuration)) / ((jumpDuration * jumpDuration) / 150));
         sprite_set_anim(gSpriteHandler, otherMole->sprite, anim_mole_jump, 0, 0, 0, 0);
-        if (otherMole->jumpx > gMolecano->jumpDuration) {
+        if (otherMole->jumpx > jumpDuration) {
+            mole->jumping = TRUE;
             sprite_set_anim(gSpriteHandler, otherMole->sprite, anim_mole_crawl, 0, 0, 0, 0);
             otherMole->jumping = FALSE;
             otherMole->jumpx = 0;
@@ -93,10 +94,22 @@ void molecano_input_event(u32 pressed, u32 released) {
     
 }
 
-void molecano_cue_spawn(struct Cue *cue, struct MolecanoCue *data, u32 beatLength) {
-    gMolecano->jumpDuration = ticks_to_frames(beatLength);
-    gMolecano->mole.jumpx = 0;
-    gMolecano->mole.jumping = TRUE;
+void molecano_cue_spawn(struct Cue *cue, struct MolecanoCue *data, u32 type) {
+    // 1 - "1, 2" normal input
+    // 2 - "1 2 3 4" normal
+    // 3 - "1, 2" stop
+    // 4 - "1 2 3 4" stop
+    // this is horrible, there mightbe a better way to do it, but idc rn:P
+
+    if (type == 1 || type == 2) {
+        data->stop = FALSE;
+    } else {
+        data->stop = TRUE;
+    }
+
+    gMolecano->jumpDuration = ticks_to_frames(type % 2 == 0 ? 12 : 24);
+    gMolecano->otherMole.jumpx = 0;
+    gMolecano->otherMole.jumping = TRUE;
 }
 
 void molecano_cue_update(struct Cue *cue, struct MolecanoCue *data, u32 runningTime, u32 duration) {
@@ -106,17 +119,30 @@ void molecano_cue_despawn(struct Cue *cue, struct MolecanoCue *data) {
 
 }
 void molecano_cue_hit(struct Cue *cue, struct MolecanoCue *data) {
-    struct Mole *otherMole = &gMolecano->otherMole;
-    otherMole->jumping = TRUE;
+    if (data->stop) {
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_stop, 0, 0, 0, 0);
+    } else {
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_crawl, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_crawl, 0, 0, 0, 0);
+    }
     
 }
 void molecano_cue_barely(struct Cue *cue, struct MolecanoCue *data) {
-    struct Mole *otherMole = &gMolecano->otherMole;
-    otherMole->jumping = TRUE;
-
+     if (data->stop) {
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_stop, 0, 0, 0, 0);
+    } else {
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_crawl, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_crawl, 0, 0, 0, 0);
+    }
 }
 void molecano_cue_miss(struct Cue *cue, struct MolecanoCue *data) {
-    struct Mole *otherMole = &gMolecano->otherMole;
-    otherMole->jumping = TRUE;
-
+ if (data->stop) {
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_stop, 0, 0, 0, 0);
+    } else {
+        sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_crawl, 0, 0, 0, 0);
+        sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_crawl, 0, 0, 0, 0);
+    }
 }
