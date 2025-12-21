@@ -19,8 +19,10 @@ extern struct Animation anim_wheel_spin[];
 /* NIGHT WALK - COMPRESSED GRAPHICS */
 
 extern struct CompressedData molecano_obj;
+extern struct CompressedData molecano_bg_tiles;
 extern struct CompressedData molecano_bg_map;
-
+extern struct CompressedData molecano_mg_map;
 /* NIGHT WALK - PALETTES */
 
 extern Palette molecano_pal[];
+extern Palette molecano_bg_pal[];

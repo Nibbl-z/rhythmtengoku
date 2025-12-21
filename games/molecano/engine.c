@@ -6,7 +6,7 @@ struct CompressedData *molecano_buffered_textures[] = {
 
 struct GraphicsTable molecano_gfx_table[] = {
     /* BG Tileset */ {
-        /* Src.  */ &molecano_obj,
+        /* Src.  */ &molecano_bg_tiles,
         /* Dest. */ BG_TILESET_BASE(0),
         /* Size  */ COMPRESSED_GFX_SOURCE
     },
@@ -15,13 +15,18 @@ struct GraphicsTable molecano_gfx_table[] = {
         /* Dest. */ BG_MAP_BASE(0xE800),
         /* Size  */ COMPRESSED_GFX_SOURCE
     },
+    /* MG Map */ {
+        /* Src.  */ &molecano_mg_map,
+        /* Dest. */ BG_MAP_BASE(0xF000),
+        /* Size  */ COMPRESSED_GFX_SOURCE
+    },
     /* OBJ Tileset */ {
         /* Src.  */ &molecano_obj,
         /* Dest. */ OBJ_TILESET_BASE(0),
         /* Size  */ COMPRESSED_GFX_SOURCE
     },
     /* BG Palette */ {
-        /* Src.  */ molecano_pal,
+        /* Src.  */ molecano_bg_pal,
         /* Dest. */ BG_PALETTE_BUFFER(0),
         /* Size  */ 0x140
     },
@@ -95,8 +100,8 @@ struct CueDefinition molecano_slow_stop = {
     /* Func. Hit       */ molecano_cue_hit,
     /* Func. Barely    */ molecano_cue_barely,
     /* Func. Miss      */ molecano_cue_miss,
-    /* SFX Spawn       */ &s_f_boxing_fly_nml_seqData,
-    /* SFX Hit         */ &s_f_boxing_just_hati_seqData,
+    /* SFX Spawn       */ &s_witch_donats_seqData,
+    /* SFX Hit         */ &s_f_boxing_just_rock_seqData,
     /* SFX Barely      */ &s_witch_donats_seqData,
     /* SFX Miss        */ NULL,
     /* Miss Condition  */ NULL

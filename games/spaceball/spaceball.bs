@@ -133,6 +133,8 @@ script script_spaceball_main
     spawn_cue 0x00
     rest 48
     spawn_cue 0x00
+    rest 24
+    spawn_cue 0x02
     rest 48
     rest 48
     rest 24

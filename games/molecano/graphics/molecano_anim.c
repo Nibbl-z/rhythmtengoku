@@ -46,10 +46,10 @@ struct Animation anim_cart_stop[] = {
 };
 
 struct Animation anim_wheel_spin[] = {
-    /* 000 */ { wheel_001, 4 },
-    /* 001 */ { wheel_002, 4 },
-    /* 002 */ { wheel_003, 4 },
-    /* 003 */ { wheel_004, 4 },
+    /* 000 */ { wheel_001, 6 },
+    /* 001 */ { wheel_002, 6 },
+    /* 002 */ { wheel_003, 6 },
+    /* 003 */ { wheel_004, 6 },
     /* End */ END_ANIMATION
 };
 
