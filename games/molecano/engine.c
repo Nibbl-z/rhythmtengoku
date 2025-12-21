@@ -54,9 +54,9 @@ struct CueDefinition molecano_slow_cue = {
     /* Func. Hit       */ molecano_cue_hit,
     /* Func. Barely    */ molecano_cue_barely,
     /* Func. Miss      */ molecano_cue_miss,
-    /* SFX Spawn       */ &s_f_boxing_fly_nml_seqData,
-    /* SFX Hit         */ &s_f_boxing_just_hati_seqData,
-    /* SFX Barely      */ &s_witch_donats_seqData,
+    /* SFX Spawn       */ NULL,
+    /* SFX Hit         */ NULL,
+    /* SFX Barely      */ NULL,
     /* SFX Miss        */ NULL,
     /* Miss Condition  */ NULL
 };
@@ -77,9 +77,9 @@ struct CueDefinition molecano_fast_cue = {
     /* Func. Hit       */ molecano_cue_hit,
     /* Func. Barely    */ molecano_cue_barely,
     /* Func. Miss      */ molecano_cue_miss,
-    /* SFX Spawn       */ &s_f_boxing_fly_nml_seqData,
-    /* SFX Hit         */ &s_f_boxing_just_hati_seqData,
-    /* SFX Barely      */ &s_witch_donats_seqData,
+    /* SFX Spawn       */ NULL,
+    /* SFX Hit         */ NULL,
+    /* SFX Barely      */ NULL,
     /* SFX Miss        */ NULL,
     /* Miss Condition  */ NULL
 };
@@ -100,32 +100,9 @@ struct CueDefinition molecano_slow_stop = {
     /* Func. Hit       */ molecano_cue_hit,
     /* Func. Barely    */ molecano_cue_barely,
     /* Func. Miss      */ molecano_cue_miss,
-    /* SFX Spawn       */ &s_witch_donats_seqData,
-    /* SFX Hit         */ &s_f_boxing_just_rock_seqData,
-    /* SFX Barely      */ &s_witch_donats_seqData,
-    /* SFX Miss        */ NULL,
-    /* Miss Condition  */ NULL
-};
-
-struct CueDefinition molecano_fast_stop = {
-    /* Unknown Param.  */ 0,
-    /* Input Buttons   */ PRESS_BUTTON(B_BUTTON),
-    /* Total Duration  */ 24,
-    /* Hit Window      */ -0x04, 0x04,
-    /* Barely Window   */ -0x06, 0x06,
-    /* Tempo-Dependent */ FALSE,
-    /* Force-Delete    */ FALSE,
-    /* Size in Memory  */ sizeof(struct MolecanoCue),
-    /* Func. Spawn     */ molecano_cue_spawn,
-    /* Spawn Parameter */ 4,
-    /* Func. Update    */ molecano_cue_update,
-    /* Func. Despawn   */ molecano_cue_despawn,
-    /* Func. Hit       */ molecano_cue_hit,
-    /* Func. Barely    */ molecano_cue_barely,
-    /* Func. Miss      */ molecano_cue_miss,
-    /* SFX Spawn       */ &s_f_boxing_fly_nml_seqData,
-    /* SFX Hit         */ &s_f_boxing_just_hati_seqData,
-    /* SFX Barely      */ &s_witch_donats_seqData,
+    /* SFX Spawn       */ NULL,
+    /* SFX Hit         */ NULL,
+    /* SFX Barely      */ NULL,
     /* SFX Miss        */ NULL,
     /* Miss Condition  */ NULL
 };
@@ -134,7 +111,6 @@ struct CueDefinition *molecano_cue_index[] = {
     &molecano_slow_cue,
     &molecano_fast_cue,
     &molecano_slow_stop,
-    &molecano_fast_stop,
     END_OF_CUE_INDEX
 };
 

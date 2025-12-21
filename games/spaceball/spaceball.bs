@@ -124,6 +124,9 @@ script script_spaceball_main
     load_molecano
     rest 24
     rest 24
+    play_sfx s_dontan_count_seqData
+    rest 24
+    play_sfx s_dontan_count_seqData
     spawn_cue 0x00
     rest 48
     spawn_cue 0x00
@@ -137,6 +140,25 @@ script script_spaceball_main
     spawn_cue 0x02
     rest 48
     rest 48
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    spawn_cue 0x01
+    rest 24
+    spawn_cue 0x01
+    rest 24
+    spawn_cue 0x01
+    rest 24
+    play_sfx s_dontan_count_seqData
+    spawn_cue 0x01
+    
+    rest 24
+    
+    rest 24
     rest 24
     rest 24
     rest 48

@@ -84,6 +84,8 @@ void molecano_engine_update(void) {
             sprite_set_y(gSpriteHandler, mole->sprite, 80);
 
             if (gMolecano->stopOnNext) {
+                play_sound_w_pitch_volume(&s_hanabi_pon_seqData, 0xd0, 0);
+                sprite_set_anim(gSpriteHandler, gMolecano->otherMole.sprite, anim_mole_flip_jump, 0, 1, 0, 0);
                 otherMole->jumping = TRUE;
                 otherMole->jumpx = 0;
                 gMolecano->stopOnNext = FALSE;
@@ -99,7 +101,7 @@ void molecano_engine_update(void) {
         
         if (otherMole->jumpx > jumpDuration) {
             sprite_set_anim(gSpriteHandler, otherMole->sprite, gMolecano->stopJump ? anim_mole_flip_stop : anim_mole_flip_land, 0, 1, 0, 0);
-
+            play_sound(&s_f_boxing_just_hati_seqData);
             if (!gMolecano->stopJump) {
                 mole->jumping = TRUE;
                 cart->moving = TRUE;
@@ -125,8 +127,8 @@ void molecano_engine_update(void) {
     }
 
     if (cart->moving) { 
-        D_03004b10.BG_OFS[1].x += 2;
-         D_03004b10.BG_OFS[2].x += 1;
+        D_03004b10.BG_OFS[1].x += gMolecano->fast ? 6 : 2;
+        D_03004b10.BG_OFS[2].x += gMolecano->fast ? 3 : 1;
     }
 }
 
@@ -151,7 +153,14 @@ void molecano_cue_spawn(struct Cue *cue, struct MolecanoCue *data, u32 type) {
     } else {
         data->stop = TRUE;
         gMolecano->stopOnNext = TRUE;
+        play_sound_w_pitch_volume(&s_hanabi_pon_seqData, 0xd0, 0);
         return;
+    }
+
+    if (type == 2 || type == 4) {
+        gMolecano->fast = TRUE;
+    } else {
+        gMolecano->fast = FALSE;
     }
 
     gMolecano->jumpDuration = ticks_to_frames(type % 2 == 0 ? 12 : 24);
@@ -167,6 +176,7 @@ void molecano_cue_despawn(struct Cue *cue, struct MolecanoCue *data) {
 
 }
 void molecano_cue_hit(struct Cue *cue, struct MolecanoCue *data) {
+    play_sound(&s_f_boxing_just_hati_seqData);
     if (data->stop) {
         sprite_set_anim(gSpriteHandler, gMolecano->mole.sprite, anim_mole_stop, 0, 0, 0, 0);
     } else {

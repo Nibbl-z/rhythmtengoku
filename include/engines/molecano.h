@@ -19,6 +19,7 @@ struct MolecanoEngineData {
     s32 jumpDuration;
     u8 stopOnNext;
     u8 stopJump;
+    u8 fast;
     struct Mole otherMole;
     struct Mole mole;
     struct Cart {
