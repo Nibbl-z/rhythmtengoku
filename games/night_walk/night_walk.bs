@@ -1,7 +1,6 @@
 .include "include/beatscript.inc"
 .include "games/night_walk/macros.inc"
-
-
+.include "games/molecano/macros.inc"
 
 .section .script.entry
 @ Night Walk - Script Entry Point
@@ -11,7 +10,7 @@ script script_night_walk_entry
     rest 24
     call script_night_walk_prologue
     set_game_fade_in_time 16
-    load_night_walk
+    load_molecano
     enable_play_inputs
     start_tracking_inputs
     call script_night_walk_main
@@ -116,13 +115,9 @@ script script_night_walk_main
     set_results_header D_0805b1f4
     import_marking_criteria night_walk_marking_criteria
     set_marking_criteria 1
-    night_walk_set_marking_criteria 0
-    night_walk_set_end_script script_night_walk_end
     set_tempo 128
     start_tracking_inputs
     run gameplay_assess_irrelevant_inputs, FALSE
-    disable_play_inputs
-    night_walk_init_balloons 7
     start_perfect_campaign
     rest 24
     enable_pause_menu
@@ -130,442 +125,556 @@ script script_night_walk_main
     rest 24
     rest 24
     play_music s_4beat_bgm_seqData
-    print_text_s D_0805b1fc
     run scene_show_bg_layer, 1
     set_marking_criteria 1
-    night_walk_set_platform 0
-    spawn_cue CUE_KICK
-    night_walk_play_drumtech_note 38, 256, 0
-    night_walk_pop_balloon
     rest 24
-    spawn_cue CUE_KICK
     rest 24
-    spawn_cue CUE_KICK
-    night_walk_play_drumtech_note 38, 256, 0
-    night_walk_pop_balloon
     rest 24
-    spawn_cue CUE_KICK
     rest 24
-    spawn_cue CUE_KICK
-    night_walk_play_drumtech_note 38, 256, 0
-    night_walk_pop_balloon
     rest 24
-    spawn_cue CUE_KICK
-    night_walk_play_drumtech_note 38, 256, 0
-    night_walk_pop_balloon
     rest 24
-    spawn_cue CUE_KICK
-    night_walk_play_drumtech_note 38, 256, 0
-    night_walk_pop_balloon
+    play_sfx s_dontan_count_seqData
     rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
-    night_walk_play_drumtech_note 38, 256, 0
-    night_walk_pop_balloon
-    rest 20
-    night_walk_pop_balloon
-    enable_play_inputs
-    rest 4
-    clear_text_s
-    run scene_hide_bg_layer, 1
-    night_walk_set_platform 0
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
+    play_sfx s_dontan_count_seqData
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
+    spawn_cue CUE_SLOW
     rest 24
-    night_walk_set_platform 0
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_STOP
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
+    rest 48
+    @ arp
     rest 24
-    spawn_cue CUE_KICK
+    play_sfx s_dontan_count_seqData
     rest 24
-    spawn_cue CUE_KICK
+    play_sfx s_dontan_count_seqData
+    molecano_left_mole_slow
     rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
+    spawn_cue CUE_SLOW
     rest 24
-    night_walk_set_platform 0
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_ROLL
+    molecano_left_mole_slow
     rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 2
-    spawn_cue CUE_CYMBAL
+    spawn_cue CUE_SLOW
     rest 24
-    night_walk_set_platform 2
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_SNARE
+    spawn_cue CUE_SLOW
     rest 24
-    spawn_cue CUE_KICK
+    molecano_left_mole_slow
     rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    set_marking_criteria 2
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_ROLL
-    rest 24
-    spawn_cue CUE_CYMBAL
-    rest 24
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    print_text_s D_0805b220
-    run scene_show_bg_layer, 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_CYMBAL
-    rest 24
-    night_walk_set_platform 1
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    clear_text_s
-    run scene_hide_bg_layer, 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 0
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    night_walk_set_platform 0
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    night_walk_set_platform 0
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 0
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_CYMBAL
-    rest 24
-    night_walk_set_platform 2
-    set_marking_criteria 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    print_text_s D_0805b250
-    run scene_show_bg_layer, 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    clear_text_s
-    run scene_hide_bg_layer, 1
-    rest 24
-    night_walk_set_platform 1
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_KICK
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 0
-    set_marking_criteria 2
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    spawn_cue CUE_SNARE
-    rest 24
-    night_walk_set_platform 1
-    spawn_cue CUE_STAR_WAND
-    rest 24
-    night_walk_set_platform 1
-    spawn_cue CUE_KICK
-    rest 24
-    rest 24
-    rest 24
-    rest 24
-    rest 24
-    rest 24
-    rest 24
+    play_sfx s_dontan_count_seqData
+    spawn_cue CUE_SLOW
     rest 12
-    disable_play_inputs
+    play_sfx s_dontan_count_seqData
     rest 12
+    molecano_left_mole_slow
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    @ sloww
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_STOP
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 48
+    rest 24
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    @ sloww
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    play_sfx s_dontan_count_seqData
+    spawn_cue CUE_SLOW
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_slow
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    @ sloww
+    spawn_cue CUE_SLOW
+    spawn_cue CUE_STOP
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+
+
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    rest 12
+    play_sfx s_dontan_count_seqData
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    spawn_cue CUE_FAST
+    play_sfx s_dontan_count_seqData
+    rest 12
+    molecano_left_mole_fast
+    rest 12
+    @ sloww
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    rest 24
+    molecano_left_mole_slow
+    rest 24
+    spawn_cue CUE_SLOW
+    spawn_cue CUE_STOP
+    rest 24
+    molecano_left_mole_slow
+
+
     rest 24
     rest 24
+    rest 48
     rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
-    rest 24
-    beat_anim
     rest 24
     rest 24
     disable_pause_menu

@@ -12,11 +12,12 @@ struct Mole {
     s16 impactSprite;
     u8 jumping;
     s32 jumpx;
+    s32 jumpDuration;
 };
 
 struct MolecanoEngineData {
     u8 version;
-    s32 jumpDuration;
+    
     u8 stopOnNext;
     u8 stopJump;
     u8 fast;
@@ -51,3 +52,5 @@ extern void molecano_cue_despawn(struct Cue *, struct MolecanoCue *);
 extern void molecano_cue_hit(struct Cue *, struct MolecanoCue *);
 extern void molecano_cue_barely(struct Cue *, struct MolecanoCue *);
 extern void molecano_cue_miss(struct Cue *, struct MolecanoCue *);
+extern void molecano_left_jump_fast(void); // event 1 bla bla bla
+extern void molecano_left_jump_slow(void);
